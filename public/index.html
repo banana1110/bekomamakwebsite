@@ -32,11 +32,54 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .icon-btn:hover{border-color:#c5d4e5;box-shadow:0 5px 18px rgba(0,0,0,.06)}
 .count{position:absolute;right:-5px;top:-6px;background:#e53935;color:#fff;font-size:10px;min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-weight:bold;}
 
-/* Kategori Çubuğu */
-.cat-bar{background:#f8fafc;border-bottom:1px solid var(--line);padding:12px 0;overflow-x:auto;white-space:nowrap;}
-.cat-bar .container{display:flex;gap:10px;align-items:center;}
-.cat-pill{padding:8px 16px;background:#fff;border:1px solid var(--line);border-radius:99px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:.2s;}
-.cat-pill:hover,.cat-pill.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+/* Kategori Çubuğu (Şık ve Modern Tasarım) */
+.cat-bar {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE ve Edge */
+}
+.cat-bar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari ve Opera */
+}
+.cat-bar .container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    max-width: 1220px;
+    margin: auto;
+    padding: 0 4%;
+    overflow-x: auto;
+}
+.cat-pill {
+    flex-shrink: 0; /* Kategorilerin büzüşmesini veya alta kaymasını engeller */
+    padding: 9px 18px;
+    background: #fff;
+    border: 1px solid #dce3eb;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,.02);
+}
+.cat-pill:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+.cat-pill.active {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+    box-shadow: 0 4px 12px rgba(8,118,209,.25);
+    font-weight: 700;
+}
 
 /* Hero & Trust */
 .hero{padding:24px 0 10px}
@@ -180,7 +223,18 @@ footer{background:#0c1623;color:#9eacbd; padding:48px 0; text-align:center;}
     <div class="cat-pill" onclick="filterByCategory('Beyaz Eşya', this)">Beyaz Eşya</div>
     <div class="cat-pill" onclick="filterByCategory('Ankastre', this)">Ankastre</div>
     <div class="cat-pill" onclick="filterByCategory('Televizyon', this)">Televizyon</div>
+    <div class="cat-pill" onclick="filterByCategory('Elektronik', this)">Elektronik</div>
+    <div class="cat-pill" onclick="filterByCategory('Isıtma Soğutma ve Enerji', this)">Isıtma Soğutma ve Enerji</div>
     <div class="cat-pill" onclick="filterByCategory('Küçük Ev Aletleri', this)">Küçük Ev Aletleri</div>
+    <div class="cat-pill" onclick="filterByCategory('Yedek Parça Ve Aksesuar', this)">Yedek Parça Ve Aksesuar</div>
+    <div class="cat-pill" onclick="filterByCategory('Su Sebili & Su Arıtma', this)">Su Sebili & Su Arıtma</div>
+    <div class="cat-pill" onclick="filterByCategory('Temizlik Ve Bakım Ürünleri', this)">Temizlik Ve Bakım Ürünleri</div>
+    <div class="cat-pill" onclick="filterByCategory('Enerji Çözümleri', this)">Enerji Çözümleri</div>
+    <div class="cat-pill" onclick="filterByCategory('Evcil Hayvan Ürünleri', this)">Evcil Hayvan Ürünleri</div>
+    <div class="cat-pill" onclick="filterByCategory('UmutKent Koleksiyonu', this)">UmutKent Koleksiyonu</div>
+    <div class="cat-pill" onclick="filterByCategory('İz Bırak', this)">İz Bırak</div>
+    <div class="cat-pill" onclick="filterByCategory('Spor ve Outdoor', this)">Spor ve Outdoor</div>
+    <div class="cat-pill" onclick="filterByCategory('Anne ve Bebek Ürünleri', this)">Anne ve Bebek Ürünleri</div>
   </div>
 </nav>
 
@@ -319,7 +373,7 @@ async function fetchProductsFromDatabase() {
         
         allProducts = data.map(p => ({
             ...p,
-            id: p._id, // MongoDB ID uyumu
+            id: p._id,
             stock: p.stock || 'Stokta Var',
             priceStr: Number(p.price).toLocaleString('tr-TR') + ",00 TL"
         }));
