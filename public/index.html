@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Beko Mamak Bayii - beyaz eşya, klima, ankastre ve elektronik ürünler.">
+<title>Beko Mamak Bayii | Ankara</title>
+<style>
+:root{--blue:#0876d1;--blue2:#0055ad;--ink:#142033;--muted:#69778b;--bg:#f5f7fa;--line:#e5eaf0;--dark:#0c1623;--white:#fff;--green:#16a36a;--shadow:0 18px 50px rgba(10,35,70,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#fff}
+button,input{font:inherit}button{cursor:pointer;outline:none;}a{text-decoration:none;color:inherit}
+.container{width:min(1220px,92%);margin:auto}
+
+/* Top Bar & Header */
+.top{background:#0d1826;color:#b8c4d3;font-size:12px}
+.top .container{min-height:36px;display:flex;justify-content:space-between;align-items:center}
+.top a:hover{color:#fff}
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{min-height:84px;display:flex;align-items:center;gap:28px}
+.brand{width:180px;height:62px;display:flex;align-items:center;font-size:24px;font-weight:900;color:var(--blue);letter-spacing:-1px;}
+.search{flex:1;position:relative}
+.search input{width:100%;height:48px;border:1px solid #dce3eb;border-radius:14px;padding:0 52px 0 17px;background:#f8fafc;outline:0;color:var(--ink)}
+.search input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(8,118,209,.08)}
+.search-results{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:14px;margin-top:5px;max-height:300px;overflow-y:auto;display:none;box-shadow:var(--shadow);z-index:200}
+.search-result-item{padding:10px 15px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;align-items:center;gap:10px}
+.search-result-item:hover{background:#f5f7fa}
+.search-result-item img{width:40px;height:40px;object-fit:contain}
+.actions{display:flex;gap:9px}
+.icon-btn{width:44px;height:44px;border:1px solid var(--line);background:#fff;border-radius:12px;display:grid;place-items:center;font-size:19px;position:relative}
+.icon-btn:hover{border-color:#c5d4e5;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.count{position:absolute;right:-5px;top:-6px;background:#e53935;color:#fff;font-size:10px;min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-weight:bold;}
+
+/* Kategori Çubuğu */
+.cat-bar{background:#f8fafc;border-bottom:1px solid var(--line);padding:12px 0;overflow-x:auto;white-space:nowrap;}
+.cat-bar .container{display:flex;gap:10px;align-items:center;}
+.cat-pill{padding:8px 16px;background:#fff;border:1px solid var(--line);border-radius:99px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:.2s;}
+.cat-pill:hover,.cat-pill.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* Hero & Trust */
+.hero{padding:24px 0 10px}
+.hero-grid{display:grid;grid-template-columns:1.55fr .75fr;gap:18px}
+.hero-main{min-height:430px;border-radius:26px;overflow:hidden;position:relative;background:linear-gradient(120deg,#003e86 0%,#0876d1 58%,#27a1f4 100%);color:#fff;padding:55px;display:flex;align-items:center}
+.hero-main:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;right:-260px;top:-210px;background:rgba(255,255,255,.10)}
+.hero-main:after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:90px;bottom:-230px;background:rgba(255,255,255,.08)}
+.hero-copy{position:relative;z-index:2;max-width:610px}
+.kicker{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;opacity:.78;margin-bottom:12px}
+.hero h1{font-size:52px;line-height:1.02;letter-spacing:-2.7px;margin-bottom:18px}
+.hero p{font-size:16px;line-height:1.65;color:#e8f3ff;max-width:540px;margin-bottom:28px}
+.btn{height:47px;padding:0 20px;border-radius:12px;border:0;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+.btn-white{background:#fff;color:#0757ad}
+.side{display:grid;gap:18px}
+.side-card{min-height:206px;border-radius:22px;padding:27px;background:#edf6ff;position:relative;overflow:hidden}
+.side-card.dark{background:#111d2b;color:#fff}
+.side-card h3{font-size:23px;line-height:1.12;max-width:230px;margin-bottom:9px}
+.side-card p{font-size:13px;color:var(--muted);max-width:245px}
+
+.trust{padding:14px 0 32px}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
+.trust-item{padding:18px;display:flex;gap:13px;align-items:center;border-right:1px solid var(--line)}
+.trust-icon{width:40px;height:40px;border-radius:12px;background:#eef6ff;color:var(--blue);display:grid;place-items:center;font-weight:900}
+.trust strong{font-size:13px;display:block}
+.trust span{font-size:11px;color:var(--muted)}
+
+/* Products Section */
+.products{background:var(--bg);padding:38px 0}
+.head{display:flex;align-items:end;justify-content:space-between;margin-bottom:18px}
+.head h2{font-size:28px;letter-spacing:-.8px}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.product{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;position:relative;transition:.2s;overflow:hidden;display:flex;flex-direction:column;}
+.product:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.photo{height:235px;border-radius:14px;background:linear-gradient(145deg,#fafbfd,#edf2f6);display:grid;place-items:center;overflow:hidden;margin-bottom:13px}
+.photo img{display:block;width:100%;height:100%;object-fit:contain;padding:18px}
+.brandline{font-size:10px;text-transform:uppercase;color:#8491a2;font-weight:800}
+.product h3{font-size:15px;line-height:1.35;margin:4px 0 8px;flex:1;}
+.price{font-size:21px;font-weight:900;margin-top:11px}
+.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}
+.buy{height:42px;background:var(--blue);color:#fff;border:0;border-radius:10px;font-weight:800}
+.info{height:42px;background:#eef5fb;color:var(--blue);border:0;border-radius:10px;font-weight:900}
+
+/* Detail View */
+#detail-view{display:none;padding:40px 0;background:#fff;}
+.back-btn{display:inline-block;margin-bottom:20px;color:var(--muted);font-weight:bold;cursor:pointer;padding:10px 15px;background:#f5f7fa;border-radius:8px;border:1px solid var(--line)}
+.detail-sec{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+.img-box{background:var(--bg);border-radius:24px;padding:40px;height:500px;display:grid;place-items:center;border:1px solid var(--line)}
+.img-box img{max-width:100%;max-height:100%;object-fit:contain}
+.info-box h1{font-size:32px;line-height:1.2;margin-bottom:15px;letter-spacing:-1px}
+.badge{display:inline-block;background:#eaf6ff;color:var(--blue);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:bold;margin-bottom:20px}
+.desc{color:var(--muted);line-height:1.8;font-size:15px;margin-bottom:30px}
+.specs{list-style:none;margin-bottom:40px;border-top:1px solid var(--line);padding-top:20px}
+.specs li{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.specs b{color:var(--ink)}
+.detail-price{font-size:38px;font-weight:900;color:var(--ink);margin-bottom:20px}
+
+/* Drawer Cart */
+.drawer{position:fixed;inset:0;z-index:300;display:none}
+.drawer.open{display:block}
+.overlay{position:absolute;inset:0;background:rgba(20,32,51,.6);backdrop-filter:blur(3px)}
+.drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(420px,100%);background:#fff;padding:24px;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.1);overflow-y:auto;}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:15px}
+.close-btn{width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:bold}
+.cart-items{max-height:220px;overflow-y:auto;margin-bottom:15px}
+.cart-item{display:flex;gap:15px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center;}
+.cart-item img{width:60px;height:60px;object-fit:contain}
+.cart-item-info{flex:1}
+.cart-item-info h4{font-size:13px;margin-bottom:3px}
+.cart-item-info p{font-size:13px;font-weight:bold;color:var(--blue)}
+.qty-controls{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty-btn{width:24px;height:24px;border:1px solid var(--line);background:#fff;border-radius:6px;font-weight:bold;font-size:12px;}
+.del-btn{margin-left:auto;color:#e53935;background:none;border:none;font-size:12px;font-weight:bold}
+
+.cart-footer{padding-top:15px;border-top:1px solid var(--line)}
+.cart-total{display:flex;justify-content:space-between;font-size:18px;font-weight:900;margin-bottom:15px}
+.checkout-form{background:#f8fafc;padding:15px;border-radius:12px;border:1px solid var(--line);margin-bottom:15px;}
+.checkout-form h4{font-size:14px;margin-bottom:10px;color:var(--dark);}
+.form-group{margin-bottom:10px;}
+.form-group label{display:block;font-size:11px;font-weight:bold;color:var(--muted);margin-bottom:3px;}
+.form-group input{width:100%;height:38px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:13px;background:#fff;}
+.checkout-btn{width:100%;height:46px;background:#16a36a;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:bold}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:400;display:none;place-items:center;padding:20px}
+.modal.open{display:grid}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.modal-card{position:relative;background:#fff;border-radius:20px;padding:30px;max-width:400px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.2)}
+.modal-card h3{font-size:22px;margin-bottom:10px;color:var(--dark)}
+.modal-card p{color:var(--muted);line-height:1.6;margin-bottom:20px}
+.modal-ok{width:100%;height:45px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-weight:bold}
+
+.loading-area{text-align:center;padding:50px 20px;}
+.campaign{padding:38px 0}
+.campaign-box{min-height:260px;border-radius:24px;overflow:hidden;background:#0e1b2a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:45px;position:relative}
+.campaign-copy h2{font-size:34px;letter-spacing:-1px;margin-bottom:9px; position:relative; z-index:2;}
+footer{background:#0c1623;color:#9eacbd; padding:48px 0; text-align:center;}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr}
+  .product-grid{grid-template-columns:repeat(2,1fr)}
+  .trust-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .nav{flex-wrap:wrap;gap:15px}
+  .search{order:3;flex-basis:100%}
+  .product-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .product h3{font-size:12px;}
+  .price{font-size:16px;}
+  .product-actions{grid-template-columns:1fr;}
+  .info{display:none}
+  .detail-sec{grid-template-columns:1fr;gap:30px}
+  .img-box{height:300px;padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="container">
+    <a href="#">Ankara / Mamak • Yetkili Beko Bayii</a>
+    <a href="tel:+905348342424">0534 834 24 24</a>
+  </div>
+</div>
+
+<header>
+  <div class="container nav">
+    <a href="#" onclick="showHome()" class="brand">BEKO MAMAK</a>
+    <div class="search" id="searchContainer">
+      <input type="text" id="searchInput" placeholder="Buzdolabı, çamaşır makinesi vb. ürünlerde arama yapın...">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+    <div class="actions">
+      <button class="icon-btn" onclick="openCart()">🛒<span class="count" id="cartBadge">0</span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="cat-bar">
+  <div class="container" id="categoryContainer">
+    <div class="cat-pill active" onclick="filterByCategory('Tümü', this)">Tüm Ürünler</div>
+    <div class="cat-pill" onclick="filterByCategory('Beyaz Eşya', this)">Beyaz Eşya</div>
+    <div class="cat-pill" onclick="filterByCategory('Ankastre', this)">Ankastre</div>
+    <div class="cat-pill" onclick="filterByCategory('Televizyon', this)">Televizyon</div>
+    <div class="cat-pill" onclick="filterByCategory('Küçük Ev Aletleri', this)">Küçük Ev Aletleri</div>
+  </div>
+</nav>
+
+<div id="home-view">
+  
+  <div class="hero container">
+    <div class="hero-grid">
+      <div class="hero-main">
+        <div class="hero-copy">
+          <div class="kicker">Yönetim Panelli Altyapı</div>
+          <h1>Evinizin Kalbine<br>Beko Yakışır</h1>
+          <p>Mamak yetkili Beko bayisi olarak en yeni beyaz eşya ve elektronik ürünleri aynı gün teslimat avantajıyla sunuyoruz.</p>
+          <button class="btn btn-white" onclick="document.getElementById('productList').scrollIntoView()">Ürünleri İncele</button>
+        </div>
+      </div>
+      <div class="side">
+        <div class="side-card">
+          <h3>Çeyiz Paketlerinde Fırsat</h3>
+          <p>4'lü çeyiz setlerinde 10.000 TL'ye varan indirimleri kaçırmayın.</p>
+        </div>
+        <div class="side-card dark">
+          <h3>Hızlı Teslimat</h3>
+          <p>Ankara içi siparişlerinizde ücretsiz ve aynı gün montaj garantisi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust container">
+    <div class="trust-grid">
+      <div class="trust-item"><div class="trust-icon">✓</div><div><strong>Ücretsiz Montaj</strong><span>Beko yetkili servisiyle</span></div></div>
+      <div class="trust-item"><div class="trust-icon">⛟</div><div><strong>Aynı Gün Teslim</strong><span>Mamak ve çevresine</span></div></div>
+      <div class="trust-item"><div class="trust-icon">🛡</div><div><strong>3 Yıl Garanti</strong><span>Orijinal Beko güvencesi</span></div></div>
+      <div class="trust-item"><div class="trust-icon">💳</div><div><strong>Taksit İmkanı</strong><span>Tüm kredi kartlarına</span></div></div>
+    </div>
+  </div>
+
+  <div class="products" id="productList">
+    <div class="container">
+      <div class="head">
+        <h2 id="listTitle">Tüm Ürünler</h2>
+      </div>
+      
+      <div id="loading" class="loading-area">
+        <p style="font-size:18px; color:var(--muted);">Ürünler Yükleniyor...</p>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+    </div>
+  </div>
+
+  <div class="campaign container">
+    <div class="campaign-box">
+      <div class="campaign-copy">
+        <h2>Eskiyi Getir Yeniyi Götür</h2>
+        <p>Eski beyaz eşyanızı evinizden alıyor, yeni Beko'nuzu indirimli fiyatlarla kuruyoruz. Kampanya detayları için bayimize ulaşın.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="detail-view">
+  <div class="container">
+    <button class="back-btn" onclick="showHome()">← Anasayfaya Dön</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- SEPET ÇEKMECESİ VE SİPARİŞ FORMU -->
+<div class="drawer" id="cartDrawer">
+  <div class="overlay" onclick="closeCart()"></div>
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <h2>Sepetim</h2>
+      <button class="close-btn" onclick="closeCart()">X</button>
+    </div>
+    
+    <div class="cart-items" id="cartItems"></div>
+    
+    <div class="cart-footer">
+      <div class="cart-total"><span>Toplam:</span> <span id="cartTotal">0,00 TL</span></div>
+      
+      <div class="checkout-form" id="checkoutForm" style="display:none;">
+        <h4>Sipariş Bilgileri</h4>
+        <div class="form-group">
+          <label>Ad Soyad</label>
+          <input type="text" id="customerName" placeholder="Adınız Soyadınız">
+        </div>
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="text" id="phone" placeholder="0532 ...">
+        </div>
+        <div class="form-group">
+          <label>Teslimat Adresi</label>
+          <input type="text" id="address" placeholder="Açık adresiniz">
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="checkoutBtn" onclick="completeShopping()" style="display:none;">Siparişi Tamamla</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="sysModal">
+  <div class="modal-bg" onclick="closeModal()"></div>
+  <div class="modal-card">
+    <h3 id="modalTitle">Bilgi</h3>
+    <p id="modalDesc">İşlem tamamlandı.</p>
+    <button class="modal-ok" onclick="closeModal()">Tamam</button>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Beko Mamak Bayii - Harman Mah. Mamak Çarşı İçi Cd. Ankara</p>
+    <p style="margin-top:10px; font-size:12px;">Bu bir prototip çalışmasıdır.</p>
+  </div>
+</footer>
+
+<script>
+let allProducts = [];
+let cart = JSON.parse(localStorage.getItem('beko_cart')) || [];
+let currentCategory = 'Tümü';
+
+window.onload = () => {
+    updateCartUI();
+    fetchProductsFromDatabase();
+};
+
+async function fetchProductsFromDatabase() {
+    try {
+        const response = await fetch('/api/products');
+        if(!response.ok) throw new Error("Veriler alınamadı");
+        const data = await response.json();
+        
+        allProducts = data.map(p => ({
+            ...p,
+            id: p._id, // MongoDB ID uyumu
+            stock: p.stock || 'Stokta Var',
+            priceStr: Number(p.price).toLocaleString('tr-TR') + ",00 TL"
+        }));
+
+        document.getElementById('loading').style.display = 'none';
+        renderProducts(allProducts);
+    } catch (error) {
+        document.getElementById('loading').innerHTML = `<b style="color:red">Sunucuya bağlanılamadı. Lütfen 'node server.js' komutunu çalıştırdığınızdan emin olun.</b>`;
+    }
+}
+
+function filterByCategory(catName, element) {
+    currentCategory = catName;
+    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+    element.classList.add('active');
+    document.getElementById('listTitle').innerText = catName === 'Tümü' ? 'Tüm Ürünler' : catName;
+
+    if(catName === 'Tümü') {
+        renderProducts(allProducts);
+    } else {
+        const filtered = allProducts.filter(p => p.category.toLowerCase() === catName.toLowerCase());
+        renderProducts(filtered);
+    }
+}
+
+function showHome() {
+    document.getElementById('home-view').style.display = 'block';
+    document.getElementById('detail-view').style.display = 'none';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').style.display = 'none';
+}
+
+function showDetail(id) {
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('detail-view').style.display = 'block';
+    
+    const product = allProducts.find(p => p.id === id);
+    if(!product) return;
+
+    let stockColor = product.stock === 'Tükendi' ? 'red' : '#16a36a';
+
+    document.getElementById('detailContent').innerHTML = `
+      <div class="detail-sec">
+        <div class="img-box">
+          <img src="${product.img}" alt="${product.title}">
+        </div>
+        <div class="info-box">
+          <span class="badge">Mamak İçi Ücretsiz Teslimat</span>
+          <h1>${product.title}</h1>
+          <p class="desc">Beko kalitesiyle üretilmiş bu ürün, bayimiz güvencesiyle satışa sunulmuştur.</p>
+          
+          <ul class="specs">
+            <li><span>Kategori</span> <b>${product.category}</b></li>
+            <li><span>Garanti</span> <b>3 Yıl Beko Garanti</b></li>
+            <li><span>Stok Durumu</span> <b style="color:${stockColor}">${product.stock}</b></li>
+          </ul>
+
+          <div class="detail-price">${product.priceStr}</div>
+          <button class="buy" style="width:100%; font-size:18px; height:60px;" onclick="addToCart('${product.id}')">Hemen Sepete Ekle</button>
+        </div>
+      </div>
+    `;
+    window.scrollTo(0,0);
+}
+
+function renderProducts(productsToRender) {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  
+  if(productsToRender.length === 0) {
+      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:40px; color:#69778b">Henüz bu kategoride ürün eklenmemiş. Yönetim panelinden ürün ekleyebilirsiniz.</p>';
+      return;
+  }
+
+  productsToRender.forEach(p => {
+    let stockColor = p.stock === 'Tükendi' ? '#e53935' : '#16a36a';
+    grid.innerHTML += `
+      <div class="product">
+        <div class="photo"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+        <div class="brandline">BEKO • ${p.category} <span style="float:right; color:${stockColor};">${p.stock}</span></div>
+        <h3>${p.title}</h3>
+        <div class="price">${p.priceStr}</div>
+        <div class="product-actions">
+          <button class="buy" onclick="addToCart('${p.id}')">Sepete Ekle</button>
+          <button class="info" onclick="showDetail('${p.id}')">İncele</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const term = e.target.value.toLowerCase();
+  const resultsContainer = document.getElementById('searchResults');
+  
+  if(!term) {
+    resultsContainer.style.display = 'none';
+    return;
+  }
+  
+  const filtered = allProducts.filter(p => p.title.toLowerCase().includes(term));
+  resultsContainer.innerHTML = '';
+  
+  if(filtered.length === 0) {
+    resultsContainer.innerHTML = '<div style="padding:15px; color:#69778b;">Sonuç bulunamadı.</div>';
+  } else {
+    filtered.forEach(p => {
+      resultsContainer.innerHTML += `
+        <div class="search-result-item" onclick="showDetail('${p.id}'); document.getElementById('searchResults').style.display='none';">
+          <img src="${p.img}" alt="Görsel">
+          <span style="font-size:13px; font-weight:bold;">${p.title}</span>
+        </div>
+      `;
+    });
+  }
+  resultsContainer.style.display = 'block';
+});
+
+document.addEventListener('click', (e) => {
+    if(!e.target.closest('.search')) {
+        document.getElementById('searchResults').style.display = 'none';
+    }
+});
+
+function saveCart() { localStorage.setItem('beko_cart', JSON.stringify(cart)); updateCartUI(); }
+
+function addToCart(id) {
+  const product = allProducts.find(p => p.id === id);
+  if(!product) return;
+  const existing = cart.find(i => i.id === id);
+  if(existing) { existing.qty++; } else { cart.push({...product, qty: 1}); }
+  saveCart();
+  openCart();
+}
+
+function updateQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) { cart = cart.filter(i => i.id !== id); }
+  saveCart();
+}
+
+function updateCartUI() {
+  const list = document.getElementById('cartItems');
+  const badge = document.getElementById('cartBadge');
+  const totalEl = document.getElementById('cartTotal');
+  const checkoutForm = document.getElementById('checkoutForm');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  
+  list.innerHTML = '';
+  let total = 0, count = 0;
+
+  if(cart.length === 0) {
+      list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:30px 0;">Sepetiniz boş.</p>';
+      checkoutForm.style.display = 'none';
+      checkoutBtn.style.display = 'none';
+  } else {
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        count += item.qty;
+        list.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.img}">
+            <div class="cart-item-info">
+              <h4>${item.title}</h4>
+              <p>${Number(item.price * item.qty).toLocaleString('tr-TR')},00 TL</p>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty('${item.id}', -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+                <button class="del-btn" onclick="updateQty('${item.id}', -999)">Sil</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      checkoutForm.style.display = 'block';
+      checkoutBtn.style.display = 'block';
+  }
+
+  totalEl.innerText = total.toLocaleString('tr-TR') + ",00 TL";
+  badge.innerText = count;
+  badge.style.display = count > 0 ? 'grid' : 'none';
+}
+
+function openCart() { document.getElementById('cartDrawer').classList.add('open'); }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); }
+
+async function completeShopping() {
+  if(cart.length === 0) return openModal('Hata', 'Sepetiniz şu an boş.');
+
+  const customerName = document.getElementById('customerName').value;
+  const phone = document.getElementById('phone').value;
+  const address = document.getElementById('address').value;
+
+  if(!customerName || !phone || !address) {
+      alert('Lütfen ad soyad, telefon ve adres bilgilerini doldurun!');
+      return;
+  }
+
+  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+  const orderData = {
+      customerName,
+      phone,
+      address,
+      products: cart,
+      totalPrice
+  };
+
+  try {
+      const res = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+      });
+
+      if(res.ok) {
+          closeCart();
+          openModal('Sipariş Alındı', 'Bayi siparişiniz başarıyla alındı ve yönetim paneline iletildi.');
+          cart = [];
+          saveCart();
+          document.getElementById('customerName').value = '';
+          document.getElementById('phone').value = '';
+          document.getElementById('address').value = '';
+      } else {
+          alert('Sipariş gönderilirken bir hata oluştu.');
+      }
+  } catch(err) {
+      alert('Bağlantı hatası!');
+  }
+}
+
+function openModal(title, text) {
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalDesc').innerText = text;
+  document.getElementById('sysModal').classList.add('open');
+}
+function closeModal() { document.getElementById('sysModal').classList.remove('open'); }
+</script>
+</body>
+</html>
