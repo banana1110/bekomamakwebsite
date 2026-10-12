@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title id="pageTitle">Ürün Detayı | Beko Mamak Bayii</title>
+<style>
+:root{--blue:#0876d1;--blue2:#0055ad;--ink:#142033;--muted:#69778b;--bg:#f5f7fa;--line:#e5eaf0;--dark:#0c1623;--white:#fff;--green:#16a36a;--shadow:0 18px 50px rgba(10,35,70,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#fff}
+button,input,select{font:inherit}button{cursor:pointer;outline:none;}a{text-decoration:none;color:inherit}
+.container{width:min(1220px,92%);margin:auto}
+
+/* Top Bar & Header */
+.top{background:#0d1826;color:#b8c4d3;font-size:12px}
+.top .container{min-height:36px;display:flex;justify-content:space-between;align-items:center}
+.top a:hover{color:#fff}
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+.brand{width:180px;height:62px;display:flex;align-items:center;font-size:24px;font-weight:900;color:var(--blue);letter-spacing:-1px;}
+.brand img{height:100%;width:auto;max-width:100%;object-fit:contain;display:block}
+
+/* Arama Çubuğu */
+.search{flex:1;position:relative}
+.search input{width:100%;height:48px;border:1px solid #dce3eb;border-radius:14px;padding:0 52px 0 17px;background:#f8fafc;outline:0;color:var(--ink)}
+.search input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(8,118,209,.08)}
+.search-results{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:14px;margin-top:5px;max-height:300px;overflow-y:auto;display:none;box-shadow:var(--shadow);z-index:200}
+.search-result-item{padding:10px 15px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;align-items:center;gap:10px}
+.search-result-item:hover{background:#f5f7fa}
+.search-result-item img{width:40px;height:40px;object-fit:contain}
+
+.actions{display:flex;gap:9px}
+.icon-btn{width:44px;height:44px;border:1px solid var(--line);background:#fff;border-radius:12px;display:grid;place-items:center;font-size:19px;position:relative}
+.icon-btn:hover{border-color:#c5d4e5;box-shadow:0 5px 18px rgba(0,0,0,.06)}
+.count{position:absolute;right:-5px;top:-6px;background:#e53935;color:#fff;font-size:10px;min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-weight:bold;}
+
+/* Ürün Detay Alanı */
+.detail-view{padding:40px 0;background:#fff;}
+.back-btn{display:inline-block;margin-bottom:20px;color:var(--muted);font-weight:bold;cursor:pointer;padding:10px 15px;background:#f5f7fa;border-radius:8px;border:1px solid var(--line)}
+.detail-sec{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+.img-box{background:var(--bg);border-radius:24px;padding:30px;height:500px;display:flex;justify-content:center;align-items:center;border:1px solid var(--line);overflow:hidden;}
+.img-box img{width:100%;height:100%;object-fit:contain;}
+.info-box h1{font-size:32px;line-height:1.2;margin-bottom:15px;letter-spacing:-1px}
+.badge{display:inline-block;background:#eaf6ff;color:var(--blue);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:bold;margin-bottom:20px}
+.desc{color:var(--muted);line-height:1.8;font-size:15px;margin-bottom:30px;white-space:pre-line;}
+.specs{list-style:none;margin-bottom:40px;border-top:1px solid var(--line);padding-top:20px}
+.specs li{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.specs b{color:var(--ink)}
+.detail-price{font-size:38px;font-weight:900;color:var(--ink);margin-bottom:20px}
+.buy-btn{width:100%;font-size:18px;height:60px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-weight:bold;}
+.buy-btn:hover{background:var(--blue2);}
+
+/* Sepet Çekmecesi */
+.drawer{position:fixed;inset:0;z-index:300;display:none}
+.drawer.open{display:block}
+.overlay{position:absolute;inset:0;background:rgba(20,32,51,.6);backdrop-filter:blur(3px)}
+.drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(420px,100%);background:#fff;padding:24px;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.1);overflow-y:auto;}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:15px}
+.close-btn{width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:bold}
+.cart-items{max-height:360px;overflow-y:auto;margin-bottom:15px}
+.cart-item{display:flex;gap:15px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center;}
+.cart-item img{width:60px;height:60px;object-fit:contain}
+.cart-item-info{flex:1}
+.cart-item-info h4{font-size:13px;margin-bottom:3px}
+.cart-item-info p{font-size:13px;font-weight:bold;color:var(--blue)}
+.qty-controls{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty-btn{width:24px;height:24px;border:1px solid var(--line);background:#fff;border-radius:6px;font-weight:bold;font-size:12px;}
+.del-btn{margin-left:auto;color:#e53935;background:none;border:none;font-size:12px;font-weight:bold}
+.cart-footer{padding-top:15px;border-top:1px solid var(--line);margin-top:auto;}
+.cart-total{display:flex;justify-content:space-between;font-size:18px;font-weight:900;margin-bottom:15px}
+.checkout-btn{width:100%;height:48px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center;}
+
+/* Modal Bildirim Kutusu */
+.modal{position:fixed;inset:0;z-index:600;display:none;place-items:center;padding:20px}
+.modal.open{display:grid}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.modal-card{position:relative;background:#fff;border-radius:20px;padding:30px;max-width:400px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.2);z-index:2;}
+.modal-ok{width:100%;height:45px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-weight:bold}
+
+/* Footer Tasarımı */
+footer{background:#0c1623;color:#9eacbd}
+.footer{padding:48px 0;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:38px;text-align:left}
+.footer-logo{width:300px;height:118px;display:flex;align-items:center;margin-bottom:16px}
+.footer-logo img{width:100%;height:100%;object-fit:contain;object-position:left center}
+.footer h4{color:#fff;font-size:13px;margin-bottom:13px}
+.footer ul{list-style:none;display:grid;gap:9px}
+.footer li,.footer p{font-size:12px;line-height:1.6}
+.footer a:hover{color:#fff}
+footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;background:none;padding:0;text-align:left;cursor:pointer}
+.bottom{border-top:1px solid #223041;padding:18px 0;font-size:11px;color:#758397}
+
+@media(max-width:1000px){
+  .footer{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .detail-sec{grid-template-columns:1fr;gap:25px;}
+  .img-box{height:320px;padding:15px;}
+}
+@media(max-width:640px){
+  .nav{flex-wrap:wrap;gap:15px}
+  .search{order:3;flex-basis:100%}
+  .footer{grid-template-columns:1fr 1fr;gap:25px;padding:38px 0}
+  .footer>div:first-child{grid-column:1/-1}
+  .footer-logo{width:240px;height:92px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="container">
+    <a href="/">Ankara / Mamak • Yetkili Beko Bayii</a>
+    <a href="tel:+905348342424">0534 834 24 24</a>
+  </div>
+</div>
+
+<header>
+  <div class="container nav">
+    <a href="/" class="brand"><img src="logo1.png" alt="Beko Mamak Bayi"></a>
+    
+    <!-- ARAMA ÇUBUĞU -->
+    <div class="search" id="searchContainer">
+      <input type="text" id="searchInput" placeholder="Buzdolabı, çamaşır makinesi vb. ürünlerde arama yapın...">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+
+    <div class="actions">
+      <button class="icon-btn" onclick="openCart()">🛒<span class="count" id="cartBadge">0</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="container detail-view">
+  <a href="/" class="back-btn">← Tüm Ürünlere Geri Dön</a>
+  <div id="detailContent">
+    <p style="text-align:center; padding:50px; color:var(--muted)">Ürün bilgileri yükleniyor...</p>
+  </div>
+</div>
+
+<!-- SEPET ÇEKMECESİ -->
+<div class="drawer" id="cartDrawer">
+  <div class="overlay" onclick="closeCart()"></div>
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <h2>Sepetim</h2>
+      <button class="close-btn" onclick="closeCart()">X</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Toplam:</span> <span id="cartTotal">0,00 TL</span></div>
+      <a href="/" class="checkout-btn" style="text-decoration:none;">Sepeti Onayla / Sipariş Ver →</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="sysModal">
+  <div class="modal-bg" onclick="closeModal()"></div>
+  <div class="modal-card">
+    <h3 id="modalTitle">Bilgi</h3>
+    <p id="modalDesc">İşlem tamamlandı.</p>
+    <button class="modal-ok" onclick="closeModal()">Tamam</button>
+  </div>
+</div>
+
+<footer>
+<div class="container footer">
+  <div>
+    <div class="footer-logo"><img src="logo.png" alt="Beko Mamak Bayi"></div>
+    <p>Beko Mamak Bayii</p>
+    <p>Harman, Mamak Çarşı İçi Cd. No:10/A<br>06260 Mamak / Ankara</p>
+    <p style="margin-top:8px"><a href="tel:+905348342424">0534 834 24 24</a></p>
+  </div>
+  <div><h4>Alışveriş</h4><ul><li><button class="link" onclick="window.location.href='/'">Beyaz Eşya</button></li><li><button class="link" onclick="window.location.href='/'">Ankastre</button></li><li><button class="link" onclick="window.location.href='/'">Klima</button></li><li><button class="link" onclick="window.location.href='/'">Tüm Ürünler</button></li></ul></div>
+  <div><h4>Mağaza</h4><ul><li><button class="link" onclick="openModal('İletişim','Beko Mamak Bayii - Harman, Mamak Çarşı İçi Cd. No:10/A, 06260 Mamak / Ankara. Telefon: 0534 834 24 24')">İletişim</button></li><li><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=Harman%2C%20Mamak%20%C3%87ar%C5%9F%C4%B1%20%C4%B0%C3%A7i%20Cd.%20No%3A10%2FA%2C%2006260%20Mamak%2FAnkara">Konum</a></li><li><a href="tel:+905348342424">Telefon</a></li><li><a href="https://wa.me/905348342424" target="_blank">WhatsApp</a></li></ul></div>
+  <div><h4>Destek</h4><ul><li><button class="link" onclick="footerSupport()">Teslimat &amp; Kurulum</button></li><li><button class="link" onclick="footerSupport()">İade Koşulları</button></li><li><button class="link" onclick="footerSupport()">Sık Sorulanlar</button></li><li><button class="link" onclick="footerSupport()">KVKK</button></li></ul></div>
+</div>
+<div class="container bottom">© 2026 Beko Mamak Bayii • Bu demo arayüzünde ürün fiyatları mağazadan teyit edilmelidir.</div>
+</footer>
+
+<script>
+let currentProduct = null;
+let allProducts = [];
+let cart = JSON.parse(localStorage.getItem('beko_cart')) || [];
+
+window.onload = () => {
+    updateCartUI();
+    loadProductDetail();
+    fetchAllProductsForSearch();
+};
+
+// Arama çubuğunun tüm ürünler arasından hızlıca arama yapabilmesi için
+async function fetchAllProductsForSearch() {
+    try {
+        const res = await fetch('/api/products');
+        if (res.ok) {
+            allProducts = await res.json();
+        }
+    } catch (err) {
+        console.error('Arama listesi yüklenemedi:', err);
+    }
+}
+
+async function loadProductDetail() {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    if (!productId) {
+        document.getElementById('detailContent').innerHTML = '<p style="text-align:center; padding:50px; color:red">Geçersiz ürün linki. <a href="/">Ana sayfaya dön</a></p>';
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/products/${productId}`);
+        if (!res.ok) throw new Error('Ürün bulunamadı');
+        const p = await res.json();
+        currentProduct = p;
+
+        document.getElementById('pageTitle').innerText = `${p.title} | Beko Mamak Bayii`;
+
+        let stockColor = p.stock === 'Tükendi' ? 'red' : '#16a36a';
+
+        let galleryHtml = '';
+        if (p.images && p.images.length > 1) {
+            galleryHtml = '<div style="display:flex; gap:10px; margin-top:15px; overflow-x:auto;">';
+            p.images.forEach(imgUrl => {
+                galleryHtml += `<img src="${imgUrl}" onclick="document.getElementById('mainDetailImg').src='${imgUrl}'" style="width:70px; height:70px; object-fit:contain; border:1px solid var(--line); border-radius:8px; cursor:pointer; padding:5px; background:#fff;">`;
+            });
+            galleryHtml += '</div>';
+        }
+
+        document.getElementById('detailContent').innerHTML = `
+          <div class="detail-sec">
+            <div>
+                <div class="img-box">
+                  <img id="mainDetailImg" src="${p.img || (p.images && p.images[0])}" alt="${p.title}">
+                </div>
+                ${galleryHtml}
+            </div>
+            <div class="info-box">
+              <span class="badge">Mamak İçi Ücretsiz Teslimat</span>
+              <h1>${p.title}</h1>
+              <p class="desc">${p.description || 'Beko kalitesiyle üretilmiş bu ürün, bayimiz güvencesiyle satışa sunulmuştur.'}</p>
+              
+              <ul class="specs">
+                <li><span>Kategori</span> <b>${p.category}</b></li>
+                <li><span>Garanti</span> <b>${p.warranty || '3 Yıl Beko Garanti'}</b></li>
+                <li><span>Stok Durumu</span> <b style="color:${stockColor}">${p.stock || 'Stokta Var'}</b></li>
+              </ul>
+
+              <div class="detail-price">${Number(p.price).toLocaleString('tr-TR')},00 TL</div>
+              <button class="buy-btn" onclick="addToCart('${p._id}')">Sepete Ekle</button>
+            </div>
+          </div>
+        `;
+    } catch (err) {
+        document.getElementById('detailContent').innerHTML = '<p style="text-align:center; padding:50px; color:red">Bu ürün bulunamadı veya kaldırılmış olabilir. <a href="/">Ana sayfaya dön</a></p>';
+    }
+}
+
+// ARAMA DİNLEYİCİSİ
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const term = e.target.value.toLowerCase().trim();
+  const resultsContainer = document.getElementById('searchResults');
+  
+  if(!term) {
+    resultsContainer.style.display = 'none';
+    return;
+  }
+  
+  const filtered = allProducts.filter(p => p.title.toLowerCase().includes(term));
+  resultsContainer.innerHTML = '';
+  
+  if(filtered.length === 0) {
+    resultsContainer.innerHTML = '<div style="padding:15px; color:#69778b;">Sonuç bulunamadı.</div>';
+  } else {
+    filtered.forEach(p => {
+      resultsContainer.innerHTML += `
+        <div class="search-result-item" onclick="window.location.href='/urun.html?id=${p._id || p.id}'">
+          <img src="${p.img || (p.images && p.images[0])}" alt="Görsel">
+          <span style="font-size:13px; font-weight:bold;">${p.title}</span>
+        </div>
+      `;
+    });
+  }
+  resultsContainer.style.display = 'block';
+});
+
+document.addEventListener('click', (e) => {
+    if(!e.target.closest('.search')) {
+        document.getElementById('searchResults').style.display = 'none';
+    }
+});
+
+function saveCart() { localStorage.setItem('beko_cart', JSON.stringify(cart)); updateCartUI(); }
+
+function addToCart(id) {
+  if (!currentProduct) return;
+  const existing = cart.find(i => (i.id === id || i._id === id));
+  if (existing) {
+      existing.qty++;
+  } else {
+      cart.push({
+          id: currentProduct._id,
+          _id: currentProduct._id,
+          title: currentProduct.title,
+          price: currentProduct.price,
+          category: currentProduct.category,
+          img: currentProduct.img || (currentProduct.images && currentProduct.images[0]),
+          qty: 1
+      });
+  }
+  saveCart();
+  openCart();
+}
+
+function updateQty(id, delta) {
+  const item = cart.find(i => (i.id === id || i._id === id));
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) { cart = cart.filter(i => (i.id !== id && i._id !== id)); }
+  saveCart();
+}
+
+function updateCartUI() {
+  const list = document.getElementById('cartItems');
+  const badge = document.getElementById('cartBadge');
+  const totalEl = document.getElementById('cartTotal');
+  
+  list.innerHTML = '';
+  let total = 0, count = 0;
+
+  if(cart.length === 0) {
+      list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:30px 0;">Sepetiniz boş.</p>';
+  } else {
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        count += item.qty;
+        list.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.img}">
+            <div class="cart-item-info">
+              <h4>${item.title}</h4>
+              <p>${Number(item.price * item.qty).toLocaleString('tr-TR')},00 TL</p>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty('${item.id || item._id}', -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="qty-btn" onclick="updateQty('${item.id || item._id}', 1)">+</button>
+                <button class="del-btn" onclick="updateQty('${item.id || item._id}', -999)">Sil</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+  }
+
+  totalEl.innerText = total.toLocaleString('tr-TR') + ",00 TL";
+  badge.innerText = count;
+  badge.style.display = count > 0 ? 'grid' : 'none';
+}
+
+function openCart() { document.getElementById('cartDrawer').classList.add('open'); }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); }
+
+function openModal(title, text) {
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalDesc').innerText = text;
+  document.getElementById('sysModal').classList.add('open');
+}
+function closeModal() { document.getElementById('sysModal').classList.remove('open'); }
+
+function footerSupport() {
+  openModal('Destek', 'Teslimat, kurulum, iade ve diğer işlemler için mağazamızdan güncel bilgi alabilirsiniz. Tel: 0534 834 24 24');
+}
+</script>
+</body>
+</html>
