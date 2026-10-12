@@ -284,7 +284,10 @@ async function loadOrders() {
     }
 
     orders.forEach(o => {
-        let productList = o.products.map(item => `• ${item.title} (${item.price} TL)`).join('<br>');
+        let productList = o.products.map(item => {
+    const qty = item.qty || 1;
+    const itemTotal = Number(item.price * qty).toLocaleString('tr-TR');
+    return `• <b>${qty} Adet</b> - ${item.title} <small style="color:#64748b;">(${itemTotal} TL)</small>`;}).join('<br>');
         tbody.innerHTML += `
             <tr>
                 <td><b>${o.customerName}</b></td>
