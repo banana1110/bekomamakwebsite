@@ -679,9 +679,8 @@ function openCart() { document.getElementById('cartDrawer').classList.add('open'
 function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); }
 
 function openAddressModal() {
-  if(cart.length === 0) return openModal('Hata', 'Sepetiniz şu an boş.');
-  closeCart();
-  document.getElementById('addressModal').classList.add('open');
+  if (cart.length === 0) return openModal('Hata', 'Sepetiniz şu an boş.');
+  window.location.href = '/checkout.html';
 }
 
 function closeAddressModal() {

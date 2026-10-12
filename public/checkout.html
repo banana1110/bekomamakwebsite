@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sipariş ve Ödeme | Beko Mamak Bayii</title>
+<style>
+:root{
+  --blue:#0876d1;
+  --dark:#111827;
+  --ink:#1f2937;
+  --muted:#6b7280;
+  --bg:#f8fafc;
+  --line:#e2e8f0;
+  --green:#10b981;
+  --green-hover:#059669;
+  --green-light:#ecfdf5;
+  --green-border:#a7f3d0;
+  --white:#fff;
+  --card-shadow:0 4px 20px -2px rgba(0,0,0,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;}
+button,input,select,textarea{font:inherit}
+a{text-decoration:none;color:inherit}
+
+/* Header */
+.checkout-nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;}
+.nav-wrap{max-width:1200px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.back-link{font-size:14px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;}
+.back-link:hover{color:var(--dark);}
+.brand-box{display:flex;flex-direction:column;align-items:center;}
+.brand-box img{height:34px;object-fit:contain;}
+.brand-sub{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;}
+.user-icon{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);}
+
+/* Grid Layout (Two Column) */
+.checkout-container{max-width:1200px;margin:32px auto;padding:0 24px;display:grid;grid-template-columns:1.55fr 1fr;gap:32px;align-items:start;}
+
+/* Cards & Sections */
+.panel-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--card-shadow);padding:24px;margin-bottom:24px;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.panel-title{font-size:16px;font-weight:700;color:var(--dark);display:flex;align-items:center;gap:8px;}
+
+/* Inputs & Form Groups */
+.form-grid{display:flex;flex-direction:column;gap:14px;}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+.input-box{position:relative;}
+.input-box input, .input-box select, .input-box textarea{
+  width:100%;
+  height:48px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  padding:0 14px;
+  font-size:14px;
+  background:#fff;
+  color:var(--ink);
+  outline:none;
+  transition:all .2s;
+}
+.input-box input:focus, .input-box select:focus, .input-box textarea:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(8,118,209,.1);
+}
+.input-box select:disabled{
+  background:#f3f4f6;
+  color:#111827;
+  font-weight:600;
+  cursor:not-allowed;
+}
+.input-box textarea{height:80px;padding:12px 14px;resize:vertical;}
+
+.info-note{
+  background:#f5f3ff;
+  border:1px solid #ddd6fe;
+  color:#6d28d9;
+  border-radius:10px;
+  padding:12px 14px;
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.radio-group{display:flex;gap:24px;align-items:center;padding:6px 0;}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.radio-label input{width:18px;height:18px;accent-color:var(--blue);cursor:pointer;}
+
+/* Buttons */
+.btn-action-row{display:flex;gap:12px;margin-top:10px;}
+.btn-submit{
+  flex:1;
+  height:48px;
+  background:var(--green);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+.btn-submit:hover{background:var(--green-hover);}
+.btn-cancel{
+  height:48px;
+  padding:0 24px;
+  background:#fff;
+  border:1px solid #d1d5db;
+  color:var(--muted);
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* Green Completed Card (Resim 2'deki Kayıtlı Adres Kutusu) */
+.saved-address-card{
+  background:var(--green-light);
+  border:1.5px solid var(--green-border);
+  border-radius:14px;
+  padding:20px;
+  position:relative;
+  display:none;
+}
+.saved-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.saved-badge{color:var(--green);font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.btn-edit-addr{background:#ede9fe;color:#6d28d9;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
+.saved-body{font-size:13px;line-height:1.6;color:var(--ink);}
+
+/* Kargo Bölümü */
+.cargo-box{
+  background:#fff;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  padding:14px 16px;
+  font-size:14px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:14px;
+}
+
+/* Ödeme Yöntemleri */
+.payment-method-box{
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:14px;
+  transition:.2s;
+}
+.payment-method-box.selected{
+  border-color:var(--green);
+  background:#fafdfb;
+}
+.payment-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+.terms-agreement{
+  border-top:1px solid var(--line);
+  margin-top:14px;
+  padding-top:14px;
+  font-size:13px;
+  color:var(--ink);
+}
+.terms-agreement a{color:var(--blue);text-decoration:underline;font-weight:600;}
+.terms-warning{
+  text-align:center;
+  padding:26px 16px;
+  color:#b45309;
+  background:#fffbeb;
+  border-radius:10px;
+  border:1px dashed #fde68a;
+  margin-top:14px;
+  font-size:14px;
+  font-weight:600;
+}
+.warning-icon{font-size:24px;display:block;margin-bottom:6px;}
+
+/* SAĞ KOLON: Sepetim & Sipariş Özeti */
+.summary-card{position:sticky;top:96px;}
+.summary-items{max-height:340px;overflow-y:auto;margin-bottom:20px;padding-right:6px;}
+.summary-item{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.summary-item img{width:64px;height:64px;object-fit:contain;background:#f8fafc;border-radius:8px;padding:4px;border:1px solid var(--line);}
+.summary-item-info{flex:1;}
+.summary-item-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;line-height:1.3;}
+.summary-item-meta{font-size:12px;color:var(--muted);}
+.summary-item-price{font-size:14px;font-weight:800;color:var(--green);text-align:right;}
+
+.summary-rows{display:flex;flex-direction:column;gap:10px;padding-top:14px;border-top:1px solid var(--line);}
+.summary-row{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);}
+.summary-row.total{font-size:18px;font-weight:900;color:var(--dark);padding-top:12px;border-top:1.5px dashed var(--line);margin-top:6px;}
+
+.btn-checkout-complete{
+  width:100%;
+  height:52px;
+  background:var(--green);
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:800;
+  margin-top:20px;
+  cursor:pointer;
+  transition:.2s;
+  box-shadow:0 6px 18px rgba(16,185,129,.24);
+}
+.btn-checkout-complete:hover{background:var(--green-hover);}
+.btn-checkout-complete:disabled{background:#9ca3af;cursor:not-allowed;box-shadow:none;}
+
+@media(max-width:960px){
+  .checkout-container{grid-template-columns:1fr;gap:20px;}
+  .summary-card{position:static;}
+  .row-2, .row-3{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="checkout-nav">
+  <div class="nav-wrap">
+    <a href="/" class="back-link">‹ Sepetim</a>
+    <div class="brand-box">
+      <img src="logo.png" alt="Beko">
+      <span class="brand-sub">Mamak Yetkili Bayii</span>
+    </div>
+    <div class="user-icon">👤</div>
+  </div>
+</header>
+
+<div class="checkout-container">
+  
+  <!-- SOL KOLON: ADRES, TESLİMAT VE ÖDEME -->
+  <div class="checkout-left">
+    
+    <!-- 1. ADRES BÖLÜMÜ -->
+    <div class="panel-card" id="addressFormPanel">
+      <div class="panel-head">
+        <h3 class="panel-title">📄 Teslimat &amp; Fatura Adresi</h3>
+        <label style="font-size:12px; font-weight:600; color:var(--muted); cursor:pointer;">
+          <input type="checkbox" id="diffInvoiceCheckbox" onchange="toggleDiffInvoice(this.checked)"> Fatura adresim farklı olsun
+        </label>
+      </div>
+
+      <div class="info-note">
+        <span>ℹ️</span> Teslimat sadece <b>Ankara</b> geneline Beko Mamak Bayii araçları ile ücretsiz yapılmaktadır.
+      </div>
+
+      <form id="orderAddressForm" onsubmit="handleSaveAddress(event)" class="form-grid">
+        <div class="input-box">
+          <input type="text" id="addrTitle" required placeholder="Adres Başlığı* (Örn: Ev Adresim, İşyerim)">
+        </div>
+
+        <div class="row-2">
+          <div class="input-box">
+            <input type="text" id="firstName" required placeholder="Adınız*">
+          </div>
+          <div class="input-box">
+            <input type="text" id="lastName" required placeholder="Soyadınız*">
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="input-box">
+            <input type="email" id="email" required placeholder="E-posta Adresiniz*">
+          </div>
+          <div class="input-box">
+            <input type="tel" id="phone" required placeholder="Cep Telefonu No* (05XX XXX XX XX)">
+          </div>
+        </div>
+
+        <!-- Ülke, İl (Ankara Kilitli), İlçe -->
+        <div class="row-3">
+          <div class="input-box">
+            <select disabled>
+              <option selected>Türkiye</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <select disabled id="citySelect">
+              <option selected value="Ankara">Ankara</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <select id="districtSelect" required onchange="handleDistrictChange(this.value)">
+              <option value="">İlçe Seçiniz*</option>
+              <option value="Mamak">Mamak</option>
+              <option value="Çankaya">Çankaya</option>
+              <option value="Keçiören">Keçiören</option>
+              <option value="Yenimahalle">Yenimahalle</option>
+              <option value="Etimesgut">Etimesgut</option>
+              <option value="Sincan">Sincan</option>
+              <option value="Altındağ">Altındağ</option>
+              <option value="Pursaklar">Pursaklar</option>
+              <option value="Gölbaşı">Gölbaşı</option>
+              <option value="Kahramankazan">Kahramankazan</option>
+              <option value="Akyurt">Akyurt</option>
+              <option value="Çubuk">Çubuk</option>
+              <option value="Elmadağ">Elmadağ</option>
+              <option value="Polatlı">Polatlı</option>
+              <option value="Beypazarı">Beypazarı</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="input-box">
+            <select id="neighborhoodSelect" required>
+              <option value="">Önce ilçe seçiniz...*</option>
+            </select>
+          </div>
+          <div class="input-box">
+            <input type="text" id="postalCode" placeholder="Posta Kodu (Opsiyonel)">
+          </div>
+        </div>
+
+        <div class="input-box">
+          <textarea id="fullAddress" required placeholder="Açık Adres* (Cadde, Sokak, Bina No, Kat, Daire No)"></textarea>
+        </div>
+
+        <div class="input-box">
+          <input type="text" id="addressDesc" placeholder="Adres Tarifi (Örn: Camii arkası, sarı bina)">
+        </div>
+
+        <!-- Fatura Tipi & TCKN -->
+        <div class="radio-group">
+          <span style="font-size:13px; font-weight:700;">Fatura Tipi:</span>
+          <label class="radio-label">
+            <input type="radio" name="invoiceType" value="Bireysel" checked onchange="toggleInvoiceFields('Bireysel')"> Bireysel
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="invoiceType" value="Kurumsal" onchange="toggleInvoiceFields('Kurumsal')"> Kurumsal
+          </label>
+        </div>
+
+        <div class="input-box" id="bireyselBox">
+          <input type="text" id="tckn" maxlength="11" placeholder="TC Kimlik No* (Garanti ve e-fatura için zorunludur)">
+        </div>
+
+        <div id="kurumsalBox" style="display:none;" class="form-grid">
+          <div class="input-box">
+            <input type="text" id="taxCompany" placeholder="Şirket Resmi Unvanı*">
+          </div>
+          <div class="row-2">
+            <div class="input-box">
+              <input type="text" id="taxOffice" placeholder="Vergi Dairesi*">
+            </div>
+            <div class="input-box">
+              <input type="text" id="taxNumber" maxlength="10" placeholder="Vergi Numarası*">
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-action-row">
+          <button type="button" class="btn-cancel" onclick="window.location.href='/'">Vazgeç</button>
+          <button type="submit" class="btn-submit">Adresi Kaydet ve İlerle</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- KAYITLI ADRES ONAY KUTUSU (Resim 2'deki Yeşil Kutu) -->
+    <div class="saved-address-card" id="savedAddressCard">
+      <div class="saved-head">
+        <span class="saved-badge">✓ Teslimat Adresi</span>
+        <button type="button" class="btn-edit-addr" onclick="editSavedAddress()">Düzenle ✎</button>
+      </div>
+      <div class="saved-body" id="savedAddressContent"></div>
+      
+      <div class="cargo-box">
+        🚚 <span>Beko Mamak Bayii Yetkili Servis ve Hızlı Teslimatı (Ücretsiz)</span>
+      </div>
+    </div>
+
+    <!-- 2. ÖDEME YÖNTEMLERİ PANELİ -->
+    <div class="panel-card" id="paymentPanel">
+      <div class="panel-head">
+        <h3 class="panel-title">💳 Ödeme Yöntemleri</h3>
+      </div>
+
+      <!-- Kredi Kartı Seçeneği -->
+      <div class="payment-method-box selected">
+        <label class="payment-header">
+          <input type="radio" name="payMethod" value="Kredi Kartı" checked>
+          <span>💳 Kredi Kartı / Banka Kartı (iyzico Güvencesiyle 3D Secure)</span>
+        </label>
+        
+        <div class="terms-agreement">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="termsCheck" onchange="toggleTerms(this.checked)">
+            <span><a href="#" onclick="openLegalModal('Ön Bilgilendirme Formu'); return false;">Ön Bilgilendirme Formu</a>'nu ve <a href="#" onclick="openLegalModal('Mesafeli Satış Sözleşmesi'); return false;">Mesafeli Satış Sözleşmesi</a>'ni okudum, onaylıyorum.</span>
+          </label>
+        </div>
+
+        <div class="terms-warning" id="termsWarning">
+          <span class="warning-icon">⚠️</span>
+          Ödeme yapabilmek için yukarıdaki sözleşmeleri onaylamanız gerekmektedir.
+        </div>
+
+        <div id="iyzicoContainer" style="display:none; margin-top:18px; text-align:center; padding:15px; background:#f0fdf4; border-radius:10px; border:1px solid #bbf7d0;">
+          <p style="color:#15803d; font-size:14px; font-weight:700;">✓ Sözleşmeler onaylandı. Siparişi Tamamla butonuna bastığınızda iyzico güvenli ödeme ekranı açılacaktır.</p>
+        </div>
+      </div>
+
+      <!-- Havale / EFT Seçeneği -->
+      <div class="payment-method-box">
+        <label class="payment-header">
+          <input type="radio" name="payMethod" value="Havale" onchange="togglePaymentSelection('Havale')">
+          <span>🏦 Havale / EFT İle Ödeme</span>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SAĞ KOLON: SEPETİM & SİPARİŞ ÖZETİ -->
+  <div class="checkout-right">
+    <div class="panel-card summary-card">
+      <div class="panel-head">
+        <h3 class="panel-title" id="summaryCountTitle">Sepetim (0)</h3>
+      </div>
+
+      <div class="summary-items" id="summaryItemList"></div>
+
+      <h4 style="font-size:15px; font-weight:800; margin-bottom:12px;">Sipariş Özeti</h4>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span>Sepet Tutarı</span>
+          <span id="subTotalText">0,00 TL</span>
+        </div>
+        <div class="summary-row">
+          <span>Kargo &amp; Teslimat Ücreti</span>
+          <span style="color:var(--green); font-weight:700;">Ücretsiz</span>
+        </div>
+        <div class="summary-row total">
+          <span>Toplam Tutar</span>
+          <span id="totalText" style="color:var(--dark);">0,00 TL</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn-checkout-complete" id="completeOrderBtn" onclick="submitFinalOrder()" disabled>
+        Ödemeye Git / Siparişi Tamamla
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('beko_cart')) || [];
+let savedOrderAddress = null;
+
+const ankaraMahalleleri = {
+  "Mamak": ["Harman Mah", "Akdere Mah", "Abidinpaşa Mah", "Demirlibahçe Mah", "Durali Alıç Mah", "General Zeki Doğan Mah", "Kayaş Mah", "Saimekadın Mah", "Tuzluçayır Mah", "Şafaktepe Mah", "Yeşilbayır Mah", "Cengizhan Mah", "Fahri Korutürk Mah", "Diğer Mahalle"],
+  "Etimesgut": ["Ahi Mesut Mah", "Alsancak Mah", "Altay Mah", "Atakent Mah", "Bağlıca Mah", "Elvan Mah", "Erler Mah", "Eryaman Mah", "Güzelkent Mah", "İstasyon Mah", "Kazım Karabekir Mah", "Piyade Mah", "Süvari Mah", "Şehit Osman Avcı Mah", "Topçu Mah", "Tunahan Mah", "Diğer Mahalle"],
+  "Çankaya": ["Bahçelievler Mah", "Balgat Mah", "Birlik Mah", "Çayyolu Mah", "Dikmen Mah", "Emek Mah", "Gaziosmanpaşa Mah", "Kızılay Mah", "Kavaklıdere Mah", "Mutlukent Mah", "Öveçler Mah", "Söğütözü Mah", "Tunalı Mah", "Ümitköy Mah", "Yıldız Mah", "Diğer Mahalle"],
+  "Keçiören": ["Aktepe Mah", "Aşağı Eğlence Mah", "Ayvalı Mah", "Bağlum Mah", "Esertepe Mah", "Etlik Mah", "İncirli Mah", "Kalaba Mah", "Kuşcağız Mah", "Ovacık Mah", "Sanatoryum Mah", "Uyanış Mah", "Diğer Mahalle"],
+  "Yenimahalle": ["Batıkent Mah", "Çamlıca Mah", "Demetevler Mah", "Ergazi Mah", "İnönü Mah", "Kardelen Mah", "Macun Mah", "Ostim Mah", "Ragıp Tüzün Mah", "Uğur Mumcu Mah", "Yeni Batı Mah", "Diğer Mahalle"],
+  "Sincan": ["Fatih Mah", "Gazi Osman Paşa Mah", "Mareşal Çakmak Mah", "Plevne Mah", "Saraycık Mah", "Tandoğan Mah", "Yenikent Mah", "Diğer Mahalle"],
+  "Altındağ": ["Aydınlıkevler Mah", "Doğantepe Mah", "Güneşevler Mah", "Hacı Bayram Mah", "Karapürçek Mah", "Önder Mah", "Siteler Mah", "Ulus Mah", "Diğer Mahalle"],
+  "Pursaklar": ["Fatih Mah", "Merkez Mah", "Mimar Sinan Mah", "Saray Mah", "Tevfik İleri Mah", "Diğer Mahalle"],
+  "Gölbaşı": ["Bahçelievler Mah", "İncek Mah", "Karşıyaka Mah", "Örencik Mah", "Seğmenler Mah", "Şafak Mah", "Diğer Mahalle"]
+};
+
+window.onload = () => {
+  if (!cart || cart.length === 0) {
+    alert('Sepetiniz boş. Ana sayfaya yönlendiriliyorsunuz.');
+    window.location.href = '/';
+    return;
+  }
+  renderSummary();
+};
+
+function renderSummary() {
+  const list = document.getElementById('summaryItemList');
+  const countTitle = document.getElementById('summaryCountTitle');
+  const subTotal = document.getElementById('subTotalText');
+  const total = document.getElementById('totalText');
+
+  list.innerHTML = '';
+  let sum = 0;
+  let totalItems = 0;
+
+  cart.forEach(item => {
+    const qty = item.qty || 1;
+    const itemTotal = item.price * qty;
+    sum += itemTotal;
+    totalItems += qty;
+
+    list.innerHTML += `
+      <div class="summary-item">
+        <img src="${item.img || (item.images && item.images[0]) || 'https://via.placeholder.com/80'}" alt="${item.title}">
+        <div class="summary-item-info">
+          <div class="summary-item-title">${item.title}</div>
+          <div class="summary-item-meta">• ${qty} Adet</div>
+        </div>
+        <div class="summary-item-price">${Number(itemTotal).toLocaleString('tr-TR')},00 TL</div>
+      </div>
+    `;
+  });
+
+  countTitle.innerText = `Sepetim (${totalItems})`;
+  const formattedPrice = Number(sum).toLocaleString('tr-TR') + ',00 TL';
+  subTotal.innerText = formattedPrice;
+  total.innerText = formattedPrice;
+}
+
+function handleDistrictChange(district) {
+  const nSelect = document.getElementById('neighborhoodSelect');
+  nSelect.innerHTML = '<option value="">Mahalle Seçiniz*</option>';
+  if(!district) return;
+  const list = ankaraMahalleleri[district] || ["Merkez Mah", "Cumhuriyet Mah", "Atatürk Mah", "Diğer Mahalle"];
+  list.forEach(m => {
+    nSelect.innerHTML += `<option value="${m}">${m}</option>`;
+  });
+}
+
+function toggleInvoiceFields(type) {
+  document.getElementById('bireyselBox').style.display = type === 'Bireysel' ? 'block' : 'none';
+  document.getElementById('kurumsalBox').style.display = type === 'Kurumsal' ? 'block' : 'none';
+}
+
+function toggleDiffInvoice(checked) {
+  if (checked) {
+    alert('Farklı fatura adresi seçeneği açıldı. Kurumsal veya şahsi fatura detaylarınızı alttaki alandan seçebilirsiniz.');
+  }
+}
+
+// 1. Adımı Kaydet ve Yeşil Onay Kutusuna Dönüştür
+function handleSaveAddress(e) {
+  e.preventDefault();
+
+  const title = document.getElementById('addrTitle').value.trim();
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const district = document.getElementById('districtSelect').value;
+  const neighborhood = document.getElementById('neighborhoodSelect').value;
+  const fullAddress = document.getElementById('fullAddress').value.trim();
+  const addressDesc = document.getElementById('addressDesc').value.trim();
+  const invoiceType = document.querySelector('input[name="invoiceType"]:checked').value;
+  const tckn = document.getElementById('tckn').value.trim();
+
+  savedOrderAddress = {
+    title,
+    firstName,
+    lastName,
+    customerName: `${firstName} ${lastName}`,
+    email,
+    phone,
+    city: 'Ankara',
+    district,
+    neighborhood,
+    fullAddress,
+    addressDesc,
+    invoiceType,
+    tckn
+  };
+
+  // Formu gizle, yeşil kartı aç (Resim 2 tasarımı)
+  document.getElementById('addressFormPanel').style.display = 'none';
+  const savedCard = document.getElementById('savedAddressCard');
+  savedCard.style.display = 'block';
+
+  document.getElementById('savedAddressContent').innerHTML = `
+    <b>${savedOrderAddress.title}</b><br>
+    ${savedOrderAddress.fullAddress}<br>
+    ${savedOrderAddress.neighborhood}, ${savedOrderAddress.district} / Ankara / Türkiye<br>
+    ${savedOrderAddress.customerName} - 📞 ${savedOrderAddress.phone}
+  `;
+
+  checkButtonState();
+}
+
+function editSavedAddress() {
+  document.getElementById('addressFormPanel').style.display = 'block';
+  document.getElementById('savedAddressCard').style.display = 'none';
+  checkButtonState();
+}
+
+function toggleTerms(checked) {
+  const warn = document.getElementById('termsWarning');
+  const iyzicoBox = document.getElementById('iyzicoContainer');
+  if (checked) {
+    warn.style.display = 'none';
+    iyzicoBox.style.display = 'block';
+  } else {
+    warn.style.display = 'block';
+    iyzicoBox.style.display = 'none';
+  }
+  checkButtonState();
+}
+
+function checkButtonState() {
+  const termsChecked = document.getElementById('termsCheck').checked;
+  const btn = document.getElementById('completeOrderBtn');
+  if (savedOrderAddress && termsChecked) {
+    btn.disabled = false;
+  } else {
+    btn.disabled = true;
+  }
+}
+
+// Nihai Sipariş Gönderimi (Veritabanına Kayıt & Admin Paneli)
+async function submitFinalOrder() {
+  if (!savedOrderAddress) return alert('Lütfen önce adresinizi kaydedin.');
+  if (!document.getElementById('termsCheck').checked) return alert('Lütfen yasal sözleşmeleri onaylayın.');
+
+  const totalPrice = cart.reduce((sum, item) => sum + (item.price * (item.qty || 1)), 0);
+
+  const finalOrderData = {
+    customerName: savedOrderAddress.customerName,
+    firstName: savedOrderAddress.firstName,
+    lastName: savedOrderAddress.lastName,
+    phone: savedOrderAddress.phone,
+    address: `${savedOrderAddress.neighborhood}, ${savedOrderAddress.fullAddress}, ${savedOrderAddress.district} / Ankara (Tarif: ${savedOrderAddress.addressDesc || '-'}) [${savedOrderAddress.title}]`,
+    addressDetails: {
+      city: 'Ankara',
+      district: savedOrderAddress.district,
+      neighborhood: savedOrderAddress.neighborhood,
+      buildingNo: '-',
+      floor: '-',
+      apartmentNo: '-',
+      addressDesc: savedOrderAddress.addressDesc,
+      addressTitle: savedOrderAddress.title
+    },
+    products: cart,
+    totalPrice
+  };
+
+  const btn = document.getElementById('completeOrderBtn');
+  btn.innerText = 'Sipariş İletiliyor...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(finalOrderData)
+    });
+
+    if (res.ok) {
+      localStorage.removeItem('beko_cart');
+      alert('Tebrikler! Siparişiniz başarıyla alındı ve Beko Mamak Bayii yönetim paneline iletildi.');
+      window.location.href = '/';
+    } else {
+      alert('Sipariş iletilirken bir hata oluştu.');
+      btn.disabled = false;
+      btn.innerText = 'Ödemeye Git / Siparişi Tamamla';
+    }
+  } catch (err) {
+    alert('Bağlantı hatası: ' + err.message);
+    btn.disabled = false;
+    btn.innerText = 'Ödemeye Git / Siparişi Tamamla';
+  }
+}
+
+function openLegalModal(docType) {
+  alert(`${docType}:\n\nBeko Mamak Bayii Mesafeli Satış Hükümleri uyarınca siparişleriniz yetkili servis güvencesiyle Ankara sınırları içinde teslim edilmektedir.`);
+}
+</script>
+</body>
+</html>
