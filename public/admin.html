@@ -354,25 +354,40 @@ function handleFormSubmit(e) {
 }
 
 async function addProduct() {
+    if (uploadedImages.length === 0) {
+        alert('Lütfen en az bir adet ürün görseli yükleyin!');
+        return;
+    }
+
     const data = {
-        title: document.getElementById('title').value,
-        price: document.getElementById('price').value,
+        title: document.getElementById('title').value.trim(),
+        price: Number(document.getElementById('price').value),
         category: document.getElementById('category').value,
         subCategory: document.getElementById('subCategory').value,
         stock: document.getElementById('stock').value,
-        warranty: document.getElementById('warranty').value,
-        description: document.getElementById('description').value,
+        warranty: document.getElementById('warranty').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        img: uploadedImages[0], // MongoDB şeması için ana görsel zorunludur
         images: uploadedImages
     };
-    const res = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    if(res.ok) {
-        resetForm();
-        loadProducts();
-        alert('Ürün başarıyla eklendi!');
+
+    try {
+        const res = await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+            resetForm();
+            loadProducts();
+            alert('Ürün başarıyla eklendi!');
+        } else {
+            const errData = await res.json();
+            alert('Hata: ' + (errData.error || 'Ürün eklenemedi.'));
+        }
+    } catch (err) {
+        alert('Sunucu bağlantı hatası: ' + err.message);
     }
 }
 
@@ -404,24 +419,34 @@ function startEdit(id) {
 
 async function updateProduct(id) {
     const data = {
-        title: document.getElementById('title').value,
-        price: document.getElementById('price').value,
+        title: document.getElementById('title').value.trim(),
+        price: Number(document.getElementById('price').value),
         category: document.getElementById('category').value,
         subCategory: document.getElementById('subCategory').value,
         stock: document.getElementById('stock').value,
-        warranty: document.getElementById('warranty').value,
-        description: document.getElementById('description').value,
+        warranty: document.getElementById('warranty').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        img: uploadedImages.length > 0 ? uploadedImages[0] : undefined,
         images: uploadedImages
     };
-    const res = await fetch(`/api/products/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    if(res.ok) {
-        resetForm();
-        loadProducts();
-        alert('Ürün başarıyla güncellendi!');
+
+    try {
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+            resetForm();
+            loadProducts();
+            alert('Ürün başarıyla güncellendi!');
+        } else {
+            const errData = await res.json();
+            alert('Hata: ' + (errData.error || 'Ürün güncellenemedi.'));
+        }
+    } catch (err) {
+        alert('Sunucu bağlantı hatası: ' + err.message);
     }
 }
 
