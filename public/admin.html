@@ -2,198 +2,156 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Beko Mamak Bayii - Yönetim Paneli</title>
+<title>Beko Bayi | Yönetim Paneli</title>
 <style>
-:root{--blue:#0876d1;--blue2:#0055ad;--ink:#142033;--muted:#69778b;--bg:#f5f7fa;--line:#e5eaf0;--dark:#0c1623;--white:#fff;--green:#16a36a;--red:#e53935;--shadow:0 10px 30px rgba(0,0,0,.08)}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);min-height:100vh;}
-button,input,select,textarea{font:inherit}
-.top-bar{background:var(--dark);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
-.brand{font-size:20px;font-weight:900;color:#fff;display:flex;align-items:center;gap:10px;}
-.brand span{color:var(--blue);}
-.site-link{color:#94a3b8;font-size:13px;text-decoration:none;font-weight:600;}
-.site-link:hover{color:#fff;}
+:root{--blue:#0876d1;--ink:#142033;--bg:#f5f7fa;--line:#cbd5e1;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif;}
+body{background:var(--bg);color:var(--ink);padding:40px 20px;}
+.container{max-width:1000px;width:100%;margin:auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.05)}
+h1{margin-bottom:20px;font-size:24px;color:var(--blue)}
+.form-group{margin-bottom:15px}
+label{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+input,select,textarea{width:100%;height:45px;padding:0 15px;border:2px solid var(--line);border-radius:10px;outline:none;font-size:14px;}
+textarea{height:90px;padding:10px 15px;resize:vertical;}
+button{height:45px;padding:0 20px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;}
+button:hover{background:#065fa8;}
+.cancel-btn{background:#69778b;margin-left:10px;display:none}
+table{width:100%;margin-top:20px;border-collapse:collapse}
+th,td{padding:12px;border-bottom:1px solid #e5eaf0;text-align:left;font-size:14px}
+th{background:#f8fafc}
+.del-btn{background:#e53935;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer}
+.edit-btn{background:#f59e0b;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;margin-right:5px}
+#loginScreen{max-width:420px;margin:100px auto;background:#fff;padding:40px 30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+#adminPanel{display:none}
+.section-title{margin-top:40px;font-size:20px;border-bottom:2px solid #e5eaf0;padding-bottom:10px;color:var(--ink);}
 
-.container{max-width:1300px;margin:30px auto;padding:0 20px;}
-.tabs{display:flex;gap:10px;margin-bottom:24px;border-bottom:1px solid var(--line);padding-bottom:12px;}
-.tab-btn{padding:10px 20px;background:#fff;border:1px solid var(--line);border-radius:10px;font-weight:700;cursor:pointer;color:var(--muted);transition:.2s;}
-.tab-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
-
-.panel-section{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);}
-.panel-section.active{display:block;}
-
-.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line);}
-.sec-title{font-size:18px;font-weight:800;color:var(--dark);}
-
-/* Form Elemanları */
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px;}
-.form-group{display:flex;flex-direction:column;gap:6px;}
-.form-group.full{grid-column:1/-1;}
-label{font-size:13px;font-weight:700;color:var(--dark);}
-input,select,textarea{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:#f8fafc;outline:none;}
-input:focus,select:focus,textarea:focus{border-color:var(--blue);background:#fff;}
-textarea{height:80px;padding:10px 14px;resize:vertical;}
-.btn-save{height:46px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-weight:800;cursor:pointer;transition:.2s;}
-.btn-save:hover{background:var(--blue2);}
-
-/* Tablolar */
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:13px;text-align:left;}
-th{background:#f8fafc;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--muted);font-weight:700;}
-td{padding:14px;border-bottom:1px solid var(--line);vertical-align:middle;}
-tr:hover td{background:#fafcff;}
-.badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:800;display:inline-block;}
-.badge-green{background:#dcfce7;color:#15803d;}
-.badge-red{background:#fee2e2;color:#b91c1c;}
-.table-img{width:48px;height:48px;object-fit:contain;background:#f8fafc;border-radius:8px;padding:4px;border:1px solid var(--line);}
-.btn-del{background:#fee2e2;color:#b91c1c;border:none;padding:6px 12px;border-radius:8px;font-weight:700;cursor:pointer;}
-.btn-del:hover{background:#fecaca;}
-
-@media(max-width:768px){
-  .form-grid{grid-template-columns:1fr;}
-}
+#imgPreviewContainer {display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+.preview-box {position:relative; width:90px; height:90px; border:1px solid var(--line); border-radius:10px; padding:5px; background:#fff;}
+.preview-box img {width:100%; height:100%; object-fit:contain;}
+.preview-box .remove-btn {position:absolute; top:-8px; right:-8px; background:#e53935; color:#fff; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:11px; padding:0; line-height:22px; text-align:center;}
 </style>
+<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="brand">BEKO <span>Mamak Bayii</span> • Yönetim Paneli</div>
-  <a href="/" target="_blank" class="site-link">Mağazayı Görüntüle ↗</a>
+<div id="loginScreen">
+    <h2>Bayi Girişi</h2>
+    <p style="color:#64748b; font-size:14px; margin-bottom:20px;">Yönetim paneli için bilgilerinizi girin.</p>
+    <div class="form-group">
+        <label>Veritabanı Kullanıcı Adı</label>
+        <input type="text" id="adminEmail" placeholder="admin" value="admin">
+    </div>
+    <div class="form-group">
+        <label>Veritabanı Şifresi</label>
+        <input type="password" id="adminPass" placeholder="Şifre">
+    </div>
+    <button onclick="checkLogin()" style="width:100%">Giriş Yap</button>
 </div>
 
-<div class="container">
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('ordersTab', this)">📦 Gelen Siparişler (<span id="orderCount">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab('productsTab', this)">🏷️ Ürün Yönetimi (<span id="prodCount">0</span>)</button>
-  </div>
-
-  <!-- 1. SİPARİŞLER BÖLÜMÜ -->
-  <div class="panel-section active" id="ordersTab">
-    <div class="sec-head">
-      <h2 class="sec-title">Müşteri Siparişleri</h2>
-      <button class="tab-btn" onclick="loadOrders()" style="padding:6px 14px; font-size:12px;">Yenile ↻</button>
-    </div>
+<div id="adminPanel" class="container">
+    <h1 id="panelTitle">Beko Bayi - Yönetim Paneli</h1>
+    <div style="margin-bottom:20px;"><a href="/" target="_blank" style="color:var(--blue); font-weight:bold;">→ Mağaza Sitesini Görüntüle</a></div>
     
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Tarih</th>
-            <th>Müşteri Bilgisi</th>
-            <th>Teslimat Adresi</th>
-            <th>Sipariş Edilen Ürünler &amp; Adetler</th>
-            <th>Toplam Tutar</th>
-            <th>İşlem</th>
-          </tr>
-        </thead>
-        <tbody id="ordersTableBody">
-          <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Siparişler yükleniyor...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 2. ÜRÜN YÖNETİMİ BÖLÜMÜ -->
-  <div class="panel-section" id="productsTab">
-    <div class="sec-head">
-      <h2 class="sec-title">Yeni Ürün Ekle</h2>
-    </div>
-
-    <form onsubmit="handleProductAdd(event)">
-      <div class="form-grid">
+    <h2 class="section-title">Yeni Ürün Ekle / Düzenle</h2>
+    <form id="productForm" onsubmit="handleFormSubmit(event)" style="margin-top:20px;">
+        <input type="hidden" id="editId">
         <div class="form-group">
-          <label>Ürün Başlığı</label>
-          <input type="text" id="pTitle" required placeholder="Örn: BEKO 9 KG ÇAMAŞIR MAKİNESİ">
+            <label>Ürün Adı</label>
+            <input type="text" id="title" required placeholder="Örn: BEKO 9 KG ÇAMAŞIR MAKİNESİ">
         </div>
-
         <div class="form-group">
-          <label>Fiyat (TL)</label>
-          <input type="number" id="pPrice" required placeholder="Örn: 18500">
+            <label>Fiyat (TL)</label>
+            <input type="number" id="price" required placeholder="18500">
         </div>
-
-        <!-- Ana Kategori -->
         <div class="form-group">
-          <label>Ana Kategori</label>
-          <select id="pCategory" required onchange="updateAdminSubCategories(this.value)">
-            <option value="">Kategori Seçiniz</option>
-            <option value="Beyaz Eşya">Beyaz Eşya</option>
-            <option value="Ankastre">Ankastre</option>
-            <option value="Televizyon">Televizyon</option>
-            <option value="Elektronik">Elektronik</option>
-            <option value="Küçük Ev Aletleri">Küçük Ev Aletleri</option>
-            <option value="Isıtma Soğutma ve Enerji">Isıtma Soğutma ve Enerji</option>
-            <option value="Yedek Parça Ve Aksesuar">Yedek Parça Ve Aksesuar</option>
-            <option value="Su Sebili & Su Arıtma">Su Sebili & Su Arıtma</option>
-            <option value="Temizlik Ve Bakım Ürünleri">Temizlik Ve Bakım Ürünleri</option>
-            <option value="Enerji Çözümleri">Enerji Çözümleri</option>
-            <option value="Spor ve Outdoor">Spor ve Outdoor</option>
-          </select>
+            <label>Kategori</label>
+            <select id="category" onchange="updateSubCategories(this.value)">
+                <option value="Beyaz Eşya">Beyaz Eşya</option>
+                <option value="Ankastre">Ankastre</option>
+                <option value="Televizyon">Televizyon</option>
+                <option value="Elektronik">Elektronik</option>
+                <option value="Isıtma Soğutma ve Enerji">Isıtma Soğutma ve Enerji</option>
+                <option value="Küçük Ev Aletleri">Küçük Ev Aletleri</option>
+                <option value="Yedek Parça Ve Aksesuar">Yedek Parça Ve Aksesuar</option>
+                <option value="Su Sebili & Su Arıtma">Su Sebili & Su Arıtma</option>
+                <option value="Temizlik Ve Bakım Ürünleri">Temizlik Ve Bakım Ürünleri</option>
+                <option value="Enerji Çözümleri">Enerji Çözümleri</option>
+                <option value="Evcil Hayvan Ürünleri">Evcil Hayvan Ürünleri</option>
+                <option value="UmutKent Koleksiyonu">UmutKent Koleksiyonu</option>
+                <option value="İz Bırak">İz Bırak</option>
+                <option value="Spor ve Outdoor">Spor ve Outdoor</option>
+                <option value="Anne ve Bebek Ürünleri">Anne ve Bebek Ürünleri</option>
+            </select>
         </div>
-
-        <!-- Alt Kategori (Dinamik) -->
         <div class="form-group">
-          <label>Alt Kategori (Opsiyonel)</label>
-          <select id="pSubCategory">
-            <option value="">Önce ana kategori seçiniz...</option>
-          </select>
+            <label>Alt Kategori (Opsiyonel)</label>
+            <select id="subCategory">
+                <option value="">Alt Kategori Seçiniz (Opsiyonel)</option>
+            </select>
         </div>
-
         <div class="form-group">
-          <label>Ana Görsel URL (Cloudinary vb.)</label>
-          <input type="url" id="pImg" required placeholder="https://res.cloudinary.com/...">
+            <label>Stok Durumu</label>
+            <select id="stock">
+                <option value="Stokta Var">Stokta Var</option>
+                <option value="Son 3 Ürün">Son 3 Ürün</option>
+                <option value="Tükendi">Tükendi</option>
+                <option value="Sipariş Üzerine">Sipariş Üzerine</option>
+            </select>
         </div>
-
         <div class="form-group">
-          <label>Stok Durumu</label>
-          <select id="pStock">
-            <option value="Stokta Var">Stokta Var</option>
-            <option value="Tükendi">Tükendi</option>
-          </select>
+            <label>Garanti Süresi</label>
+            <input type="text" id="warranty" placeholder="Örn: 3 Yıl Beko Garanti (veya 10 Yıl Motor Garantisi)" value="3 Yıl Beko Garanti">
         </div>
-
         <div class="form-group">
-          <label>Garanti Süresi</label>
-          <input type="text" id="pWarranty" placeholder="Örn: 3 Yıl Beko Garanti" value="3 Yıl Beko Garanti">
+            <label>Ürün Açıklaması</label>
+            <textarea id="description" placeholder="Ürün özellikleri, enerji sınıfı veya detaylı açıklamayı buraya girin..."></textarea>
         </div>
-
-        <div class="form-group full">
-          <label>Ürün Açıklaması</label>
-          <textarea id="pDesc" placeholder="Ürün özellikleri ve teknik detaylar..."></textarea>
+        <div class="form-group">
+            <label>Ürün Görselleri (Çoklu Seçim Yapabilirsiniz)</label>
+            <input type="file" id="imgFile" accept="image/*" multiple onchange="handleMultipleImagesSelect(this)" style="height:auto;padding:10px 15px">
+            <div id="imgStatus" style="font-size:12px;color:#64748b;margin-top:6px"></div>
+            <div id="imgPreviewContainer"></div>
         </div>
-
-        <div class="form-group full">
-          <button type="submit" class="btn-save" id="saveProdBtn">Ürünü Kaydet ve Yayına Al</button>
-        </div>
-      </div>
+        
+        <button type="submit" id="submitBtn">Ürünü Ekle / Kaydet</button>
+        <button type="button" id="cancelBtn" class="cancel-btn" onclick="resetForm()">İptal</button>
     </form>
 
-    <div class="sec-head" style="margin-top:30px;">
-      <h2 class="sec-title">Mevcut Ürünler</h2>
-    </div>
-
-    <div class="table-wrap">
-      <table>
+    <h2 class="section-title">Gelen Siparişler</h2>
+    <table>
         <thead>
-          <tr>
-            <th>Görsel</th>
-            <th>Ürün Başlığı</th>
-            <th>Kategori / Alt Kategori</th>
-            <th>Fiyat</th>
-            <th>Stok</th>
-            <th>İşlem</th>
-          </tr>
+            <tr>
+                <th>Müşteri Adı</th>
+                <th>Telefon & Adres</th>
+                <th>Ürünler</th>
+                <th>Toplam Tutar</th>
+                <th>İşlem</th>
+            </tr>
         </thead>
-        <tbody id="productsTableBody">
-          <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Ürünler yükleniyor...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+        <tbody id="orderTableBody"></tbody>
+    </table>
+
+    <h2 class="section-title">Mevcut Ürünler</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Ürün Adı</th>
+                <th>Kategori</th>
+                <th>Fiyat</th>
+                <th>Stok</th>
+                <th>Garanti</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+    </table>
 </div>
 
 <script>
-// TÜM ALT KATEGORİ HARİTASI
+let allProducts = [];
+let uploading = false;
+let uploadedImages = [];
+
 const categorySubMap = {
   "Beyaz Eşya": ["Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi", "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Set Üstü Ocak", "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"],
   "Ankastre": ["Ankastre Ocak", "Ankastre Davlumbazlar", "Ankastre Aspiratörler", "Ankastre Bulaşık Makineleri", "Ankastre Buzdolabı", "Ankastre Fırın", "Ankastre Mikrodalgalar", "Ankastre Set", "Pişirici Yedek Parça ve Aksesuarları"],
@@ -208,173 +166,282 @@ const categorySubMap = {
   "Spor ve Outdoor": ["Elektrikli Scooter", "Kamp ve Outdoor Ekipmanları", "Elektrikli Bisiklet", "Araç Buzdolabı", "Deniz & Su Sporları Ekipmanları"]
 };
 
-window.onload = () => {
-  loadOrders();
-  loadProducts();
-};
+function updateSubCategories(selectedCategory) {
+    const subSelect = document.getElementById('subCategory');
+    subSelect.innerHTML = '<option value="">Alt Kategori Seçiniz (Opsiyonel)</option>';
 
-function switchTab(tabId, btn) {
-  document.querySelectorAll('.panel-section').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  btn.classList.add('active');
+    if (categorySubMap[selectedCategory]) {
+        categorySubMap[selectedCategory].forEach(sub => {
+            subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+        });
+    }
 }
 
-function updateAdminSubCategories(selectedCategory) {
-  const subSelect = document.getElementById('pSubCategory');
-  subSelect.innerHTML = '<option value="">Alt Kategori Seçiniz (Opsiyonel)</option>';
-
-  if (categorySubMap[selectedCategory]) {
-    categorySubMap[selectedCategory].forEach(sub => {
-      subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+function resizeImage(file, maxSize = 900) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+            const image = new Image();
+            image.onerror = reject;
+            image.onload = () => {
+                const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.round(image.width * scale);
+                canvas.height = Math.round(image.height * scale);
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', 0.85));
+            };
+            image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
     });
-  }
 }
 
-// SİPARİŞLERİ GETİR (Adet & İtem Detaylı)
-async function loadOrders() {
-  const tbody = document.getElementById('ordersTableBody');
-  try {
-    const res = await fetch('/api/orders');
-    if (!res.ok) throw new Error('Siparişler çekilemedi');
-    const orders = await res.json();
+async function handleMultipleImagesSelect(input) {
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
     
-    document.getElementById('orderCount').innerText = orders.length;
+    const status = document.getElementById('imgStatus');
+    uploading = true;
+    status.style.color = '#0876d1';
+    
+    for (let i = 0; i < files.length; i++) {
+        status.innerText = `${i + 1} / ${files.length} resim yükleniyor. Lütfen bekleyin...`;
+        try {
+            const dataUrl = await resizeImage(files[i]);
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: dataUrl })
+            });
+            const result = await res.json();
+            if (!res.ok || !result.url) throw new Error(result.error);
+            
+            uploadedImages.push(result.url);
+            renderPreviews();
+        } catch (err) {
+            alert(`${files[i].name} yüklenemedi: ` + err.message);
+        }
+    }
+    
+    status.style.color = 'green';
+    status.innerText = 'Tüm resimler başarıyla yüklendi.';
+    input.value = '';
+    uploading = false;
+}
 
-    if (orders.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Henüz sipariş bulunmuyor.</td></tr>';
-      return;
+function renderPreviews() {
+    const container = document.getElementById('imgPreviewContainer');
+    container.innerHTML = '';
+    uploadedImages.forEach((url, index) => {
+        container.innerHTML += `
+        <div class="preview-box">
+            <img src="${url}">
+            <button type="button" class="remove-btn" onclick="removeImage(${index})">X</button>
+        </div>`;
+    });
+}
+
+function removeImage(index) {
+    uploadedImages.splice(index, 1);
+    renderPreviews();
+}
+
+const socket = io();
+socket.on('newOrder', function(order) {
+    loadOrders(); 
+});
+
+async function checkLogin() {
+    const email = document.getElementById('adminEmail').value;
+    const password = document.getElementById('adminPass').value;
+    try {
+        const res = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if(data.success) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            updateSubCategories(document.getElementById('category').value);
+            loadProducts();
+            loadOrders();
+        } else {
+            alert(data.error || 'Giriş başarısız!');
+        }
+    } catch(err) {
+        alert('Sunucu bağlantı hatası!');
+    }
+}
+
+async function loadProducts() {
+    const res = await fetch('/api/products');
+    const products = await res.json();
+    allProducts = products;
+    const tbody = document.getElementById('productTableBody');
+    tbody.innerHTML = '';
+    
+    products.forEach(p => {
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${p.title}</b></td>
+                <td>
+                    ${p.category}
+                    ${p.subCategory ? `<br><small style="color:var(--blue); font-weight:bold;">↳ ${p.subCategory}</small>` : ''}
+                </td>
+                <td>${Number(p.price).toLocaleString('tr-TR')} TL</td>
+                <td><span style="color:${p.stock === 'Tükendi' ? 'red' : 'green'}">${p.stock || 'Stokta Var'}</span></td>
+                <td>${p.warranty || '3 Yıl Beko Garanti'}</td>
+                <td>
+                    <button class="edit-btn" onclick="startEdit('${p._id}')">Düzenle</button>
+                    <button class="del-btn" onclick="deleteProduct('${p._id}')">Sil</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+async function loadOrders() {
+    const res = await fetch('/api/orders');
+    const orders = await res.json();
+    const tbody = document.getElementById('orderTableBody');
+    tbody.innerHTML = '';
+
+    if(orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">Henüz gelen sipariş yok.</td></tr>`;
+        return;
     }
 
-    tbody.innerHTML = '';
-    orders.reverse().forEach(o => {
-      const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString('tr-TR') : '-';
-      
-      // Her ürünün adedini ve kalem toplamını gösterir
-      const productList = (o.products || []).map(item => {
-        const qty = item.qty || 1;
-        const itemTotal = Number(item.price * qty).toLocaleString('tr-TR');
-        return `• <b>${qty} Adet</b> - ${item.title} <small style="color:#64748b;">(${itemTotal} TL)</small>`;
-      }).join('<br>');
+    orders.forEach(o => {
+        let productList = o.products.map(item => {
+            const qty = item.qty || 1;
+            const itemTotal = Number(item.price * qty).toLocaleString('tr-TR');
+            return `• <b>${qty} Adet</b> - ${item.title} <small style="color:#64748b;">(${itemTotal} TL)</small>`;
+        }).join('<br>');
 
-      tbody.innerHTML += `
-        <tr>
-          <td><small style="color:var(--muted);">${dateStr}</small></td>
-          <td><b>${o.customerName || '-'}</b><br><small style="color:var(--blue); font-weight:700;">📞 ${o.phone || '-'}</small></td>
-          <td style="max-width:280px;"><small>${o.address || '-'}</small></td>
-          <td>${productList}</td>
-          <td><b style="color:var(--green); font-size:15px;">${Number(o.totalPrice || 0).toLocaleString('tr-TR')},00 TL</b></td>
-          <td><button class="btn-del" onclick="deleteOrder('${o._id}')">Sil</button></td>
-        </tr>
-      `;
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${o.customerName}</b></td>
+                <td>${o.phone}<br><small>${o.address}</small></td>
+                <td>${productList}</td>
+                <td><b>${Number(o.totalPrice).toLocaleString('tr-TR')} TL</b></td>
+                <td>
+                    <button class="del-btn" onclick="deleteOrder('${o._id}')">Siparişi Sil</button>
+                </td>
+            </tr>
+        `;
     });
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:30px;">Hata: ${err.message}</td></tr>`;
-  }
 }
 
 async function deleteOrder(id) {
-  if (!confirm('Bu siparişi silmek istediğinize emin misiniz?')) return;
-  try {
+    if(!confirm('Bu siparişi silmek istediğinize emin misiniz?')) return;
     const res = await fetch(`/api/orders/${id}`, { method: 'DELETE' });
-    if (res.ok) loadOrders();
-    else alert('Sipariş silinemedi');
-  } catch (err) {
-    alert('Hata: ' + err.message);
-  }
+    if(res.ok) loadOrders();
 }
 
-// ÜRÜNLERİ GETİR
-async function loadProducts() {
-  const tbody = document.getElementById('productsTableBody');
-  try {
-    const res = await fetch('/api/products');
-    if (!res.ok) throw new Error('Ürünler çekilemedi');
-    const products = await res.json();
-
-    document.getElementById('prodCount').innerText = products.length;
-
-    if (products.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Henüz ürün eklenmemiş.</td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = '';
-    products.forEach(p => {
-      const stockBadge = p.stock === 'Tükendi' 
-        ? '<span class="badge badge-red">Tükendi</span>' 
-        : '<span class="badge badge-green">Stokta Var</span>';
-
-      tbody.innerHTML += `
-        <tr>
-          <td><img src="${p.img}" class="table-img" alt="Görsel"></td>
-          <td><b>${p.title}</b></td>
-          <td>
-            ${p.category}
-            ${p.subCategory ? `<br><small style="color:#0876d1; font-weight:700;">↳ ${p.subCategory}</small>` : ''}
-          </td>
-          <td><b>${Number(p.price).toLocaleString('tr-TR')},00 TL</b></td>
-          <td>${stockBadge}</td>
-          <td><button class="btn-del" onclick="deleteProduct('${p._id}')">Sil</button></td>
-        </tr>
-      `;
-    });
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:30px;">Hata: ${err.message}</td></tr>`;
-  }
+function handleFormSubmit(e) {
+    e.preventDefault();
+    if (uploading) { alert('Resimler yükleniyor, lütfen tamamlanmasını bekleyin.'); return; }
+    const editId = document.getElementById('editId').value;
+    if(editId) updateProduct(editId);
+    else addProduct();
 }
 
-// YENİ ÜRÜN EKLE
-async function handleProductAdd(e) {
-  e.preventDefault();
-  const btn = document.getElementById('saveProdBtn');
-  btn.disabled = true;
-  btn.innerText = 'Kaydediliyor...';
-
-  const productData = {
-    title: document.getElementById('pTitle').value.trim(),
-    price: Number(document.getElementById('pPrice').value),
-    category: document.getElementById('pCategory').value,
-    subCategory: document.getElementById('pSubCategory').value,
-    img: document.getElementById('pImg').value.trim(),
-    stock: document.getElementById('pStock').value,
-    warranty: document.getElementById('pWarranty').value.trim(),
-    description: document.getElementById('pDesc').value.trim()
-  };
-
-  try {
+async function addProduct() {
+    const data = {
+        title: document.getElementById('title').value,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
+        subCategory: document.getElementById('subCategory').value,
+        stock: document.getElementById('stock').value,
+        warranty: document.getElementById('warranty').value,
+        description: document.getElementById('description').value,
+        images: uploadedImages
+    };
     const res = await fetch('/api/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productData)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
     });
-
-    if (res.ok) {
-      alert('Ürün başarıyla eklendi!');
-      e.target.reset();
-      updateAdminSubCategories('');
-      loadProducts();
-    } else {
-      const data = await res.json();
-      alert('Hata: ' + (data.error || 'Ürün kaydedilemedi'));
+    if(res.ok) {
+        resetForm();
+        loadProducts();
+        alert('Ürün başarıyla eklendi!');
     }
-  } catch (err) {
-    alert('Sunucu hatası: ' + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.innerText = 'Ürünü Kaydet ve Yayına Al';
-  }
+}
+
+function startEdit(id) {
+    const p = allProducts.find(item => item._id === id);
+    if(!p) return;
+    document.getElementById('editId').value = p._id;
+    document.getElementById('title').value = p.title;
+    document.getElementById('price').value = p.price;
+    document.getElementById('category').value = p.category;
+    
+    // Önce seçilen ana kategorinin alt kategorilerini yükle, sonra kayıtlı olanı seç
+    updateSubCategories(p.category);
+    document.getElementById('subCategory').value = p.subCategory || '';
+    
+    document.getElementById('stock').value = p.stock || 'Stokta Var';
+    document.getElementById('warranty').value = p.warranty || '3 Yıl Beko Garanti';
+    document.getElementById('description').value = p.description || '';
+    
+    uploadedImages = p.images && p.images.length > 0 ? [...p.images] : (p.img ? [p.img] : []);
+    renderPreviews();
+    
+    document.getElementById('imgFile').value = '';
+    document.getElementById('imgStatus').innerText = 'Mevcut resimler listeleniyor. Yeni ekleme veya silme yapabilirsiniz.';
+    document.getElementById('submitBtn').innerText = 'Değişiklikleri Kaydet (Güncelle)';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+async function updateProduct(id) {
+    const data = {
+        title: document.getElementById('title').value,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
+        subCategory: document.getElementById('subCategory').value,
+        stock: document.getElementById('stock').value,
+        warranty: document.getElementById('warranty').value,
+        description: document.getElementById('description').value,
+        images: uploadedImages
+    };
+    const res = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if(res.ok) {
+        resetForm();
+        loadProducts();
+        alert('Ürün başarıyla güncellendi!');
+    }
+}
+
+function resetForm() {
+    document.getElementById('productForm').reset();
+    updateSubCategories(document.getElementById('category').value);
+    document.getElementById('warranty').value = '3 Yıl Beko Garanti';
+    document.getElementById('description').value = '';
+    uploadedImages = [];
+    renderPreviews();
+    document.getElementById('imgStatus').innerText = '';
+    document.getElementById('editId').value = '';
+    document.getElementById('submitBtn').innerText = 'Ürünü Ekle / Kaydet';
+    document.getElementById('cancelBtn').style.display = 'none';
 }
 
 async function deleteProduct(id) {
-  if (!confirm('Bu ürünü mağazadan silmek istediğinize emin misiniz?')) return;
-  try {
+    if(!confirm('Bu ürünü silmek istediğinize emin misiniz?')) return;
     const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-    if (res.ok) loadProducts();
-    else alert('Ürün silinemedi');
-  } catch (err) {
-    alert('Hata: ' + err.message);
-  }
+    if(res.ok) loadProducts();
 }
 </script>
 </body>
