@@ -34,24 +34,94 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .count{position:absolute;right:-5px;top:-6px;background:#e53935;color:#fff;font-size:10px;min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-weight:bold;}
 
 /* Kategori Çubuğu */
-.cat-bar{background:#f8fafc;border-bottom:1px solid var(--line);padding:12px 0;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
-.cat-bar::-webkit-scrollbar{display:none;}
-.cat-bar .container{display:flex;gap:10px;align-items:center;width:100%;max-width:1220px;margin:auto;padding:0 4%;overflow-x:auto;}
-.cat-pill{flex-shrink:0;padding:9px 18px;background:#fff;border:1px solid #dce3eb;border-radius:99px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s ease;box-shadow:0 1px 3px rgba(0,0,0,.02);}
-.cat-pill:hover{border-color:var(--blue);color:var(--blue);}
-.cat-pill.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 12px rgba(8,118,209,.25);font-weight:700;}
+.cat-bar {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.cat-bar::-webkit-scrollbar { display: none; }
+.cat-bar .container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    max-width: 1220px;
+    margin: auto;
+    padding: 0 4%;
+    overflow-x: auto;
+}
+.cat-pill {
+    flex-shrink: 0;
+    padding: 9px 18px;
+    background: #fff;
+    border: 1px solid #dce3eb;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,.02);
+}
+.cat-pill:hover { border-color: var(--blue); color: var(--blue); }
+.cat-pill.active {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+    box-shadow: 0 4px 12px rgba(8,118,209,.25);
+    font-weight: 700;
+}
 
 /* Alt Kategori Kartları */
-.subcat-wrapper{background:#fff;border-bottom:1px solid var(--line);padding:16px 0;display:none;}
-.subcat-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 0 10px 0;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
-.subcat-scroll::-webkit-scrollbar{height:6px;}
-.subcat-scroll::-webkit-scrollbar-thumb{background:#dce3eb;border-radius:4px;}
-.subcat-card{flex:0 0 140px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all .2s ease;text-align:center;user-select:none;}
-.subcat-card:hover{border-color:var(--blue);background:#fff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06);}
-.subcat-card.active{border-color:var(--blue);background:#eaf6ff;color:var(--blue);font-weight:800;box-shadow:0 0 0 2px var(--blue);}
-.subcat-card .subcat-icon{width:48px;height:48px;object-fit:contain;display:block;}
-.subcat-card span{font-size:12px;line-height:1.25;font-weight:600;}
-
+.subcat-wrapper {
+  margin: 10px 0 24px 0;
+  display: none;
+}
+.subcat-scroll {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 2px 14px 2px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.subcat-scroll::-webkit-scrollbar { height: 6px; }
+.subcat-scroll::-webkit-scrollbar-thumb { background: #dce3eb; border-radius: 4px; }
+.subcat-card {
+  flex: 0 0 auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,.03);
+}
+.subcat-card:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8,118,209,.12);
+}
+.subcat-card.active {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(8,118,209,.25);
+}
+.subcat-card span { font-size: 13px; font-weight: 600; }
 
 /* Hero & Trust */
 .hero{padding:24px 0 10px}
@@ -86,17 +156,24 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .products{background:var(--bg);padding:38px 0}
 .head{display:flex;align-items:end;justify-content:space-between;margin-bottom:18px}
 .head h2{font-size:28px;letter-spacing:-.8px}
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.product{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;position:relative;transition:.2s;overflow:hidden;display:flex;flex-direction:column;}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;position:relative;transition:.2s;overflow:hidden;display:flex;flex-direction:column;}
 .product:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
-.photo{height:235px;border-radius:14px;background:linear-gradient(145deg,#fafbfd,#edf2f6);display:grid;place-items:center;overflow:hidden;margin-bottom:13px}
+.photo{height:250px;border-radius:14px;background:linear-gradient(145deg,#fafbfd,#edf2f6);display:grid;place-items:center;overflow:hidden;margin-bottom:13px}
 .photo img{display:block;width:100%;height:100%;object-fit:contain;padding:18px}
-.brandline{font-size:10px;text-transform:uppercase;color:#8491a2;font-weight:800}
-.product h3{font-size:15px;line-height:1.35;margin:4px 0 8px;flex:1;}
-.price{font-size:21px;font-weight:900;margin-top:11px}
-.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}
-.buy{height:42px;background:var(--blue);color:#fff;border:0;border-radius:10px;font-weight:800}
-.info{height:42px;background:#eef5fb;color:var(--blue);border:0;border-radius:10px;font-weight:900}
+.brandline{font-size:11px;text-transform:uppercase;color:#8491a2;font-weight:800}
+.product h3{font-size:16px;line-height:1.35;margin:6px 0 10px;flex:1;}
+.price{font-size:22px;font-weight:900;margin-top:11px}
+.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.buy{height:44px;background:var(--blue);color:#fff;border:0;border-radius:10px;font-weight:800}
+.info{height:44px;background:#eef5fb;color:var(--blue);border:0;border-radius:10px;font-weight:900}
+
+/* Sayfalama (Pagination) Stilleri */
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:36px;user-select:none;}
+.page-btn{min-width:40px;height:40px;padding:0 12px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.page-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);background:#f8fafc;}
+.page-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 12px rgba(8,118,209,.25);}
+.page-btn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* Drawer Cart */
 .drawer{position:fixed;inset:0;z-index:300;display:none}
@@ -118,32 +195,6 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .cart-total{display:flex;justify-content:space-between;font-size:18px;font-weight:900;margin-bottom:15px}
 .checkout-btn{width:100%;height:48px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:8px;}
 .checkout-btn:hover{background:var(--blue2);}
-
-/* Ankara Adres & İletişim Formu (Modal) */
-.checkout-modal{position:fixed;inset:0;z-index:500;display:none;place-items:center;padding:15px;}
-.checkout-modal.open{display:grid;}
-.checkout-overlay{position:absolute;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);}
-.checkout-card{position:relative;background:#fff;width:min(520px,100%);max-height:92vh;overflow-y:auto;border-radius:20px;padding:26px 28px;box-shadow:0 25px 60px rgba(0,0,0,.25);z-index:10;}
-.checkout-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px;}
-.checkout-header h3{font-size:19px;font-weight:800;color:var(--ink);}
-.checkout-close{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:bold;cursor:pointer;}
-
-.addr-form{display:flex;flex-direction:column;gap:12px;}
-.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-
-.input-box{position:relative;width:100%;}
-.input-box fieldset{border:1.5px solid #d1d5db;border-radius:8px;padding:0 12px;margin:0;transition:border-color .2s;}
-.input-box fieldset:focus-within{border-color:var(--blue);}
-.input-box legend{padding:0 4px;font-size:11px;font-weight:600;color:#6b7280;line-height:1;}
-.input-box input, .input-box select{width:100%;border:none;outline:none;background:transparent;font-size:14px;color:var(--ink);height:40px;padding:0;}
-.input-box select:disabled{color:#1f2937;font-weight:700;cursor:not-allowed;}
-.input-box input::placeholder{color:#9ca3af;font-size:13px;}
-
-.section-label{font-size:14px;font-weight:800;color:var(--ink);margin-top:6px;margin-bottom:2px;}
-.submit-order-btn{margin-top:10px;width:100%;height:48px;background:#16a36a;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;}
-.submit-order-btn:hover{background:#138656;}
-.city-note{font-size:11px;color:#0876d1;margin-top:2px;font-weight:600;}
 
 /* Modal Bildirim Kutusu */
 .modal{position:fixed;inset:0;z-index:600;display:none;place-items:center;padding:20px}
@@ -172,7 +223,7 @@ footer{background:#0c1623;color:#9eacbd}
 .footer ul{list-style:none;display:grid;gap:9px}
 .footer li,.footer p{font-size:12px;line-height:1.6}
 .footer a:hover{color:#fff}
-footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;background:none}
+footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;background:none;padding:0;text-align:left;cursor:pointer}
 .bottom{border-top:1px solid #223041;padding:18px 0;font-size:11px;color:#758397}
 
 @media(max-width:1000px){
@@ -185,11 +236,11 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
   .nav{flex-wrap:wrap;gap:15px}
   .search{order:3;flex-basis:100%}
   .product-grid{grid-template-columns:1fr 1fr;gap:10px}
-  .product h3{font-size:12px;}
+  .photo{height:180px}
+  .product h3{font-size:13px;}
   .price{font-size:16px;}
   .product-actions{grid-template-columns:1fr;}
   .info{display:block}
-  .row-2, .row-3{grid-template-columns:1fr;}
   .side{grid-template-columns:1fr}.side-card{min-height:165px}.side-img{width:160px;height:130px}.trust-item{padding:13px 10px}.trust-icon{width:32px;height:32px;font-size:13px}.trust strong{font-size:10px}.trust span{font-size:9px}
   .campaign-box{padding:28px;display:block}.campaign-copy h2{font-size:25px}.campaign-actions{margin-top:18px}.footer{grid-template-columns:1fr 1fr;gap:25px;padding:38px 0}.footer>div:first-child{grid-column:1/-1}.footer-logo{width:240px;height:92px}
 }
@@ -218,30 +269,20 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
 </header>
 
 <nav class="cat-bar">
-
   <div class="container" id="categoryContainer">
     <div class="cat-pill active" onclick="filterByCategory('Tümü', this)">Tüm Ürünler</div>
     <div class="cat-pill" onclick="filterByCategory('Beyaz Eşya', this)">Beyaz Eşya</div>
     <div class="cat-pill" onclick="filterByCategory('Ankastre', this)">Ankastre</div>
     <div class="cat-pill" onclick="filterByCategory('Televizyon', this)">Televizyon</div>
     <div class="cat-pill" onclick="filterByCategory('Elektronik', this)">Elektronik</div>
-    <div class="cat-pill" onclick="filterByCategory('Isıtma Soğutma ve Enerji', this)">Isıtma Soğutma ve Enerji</div>
     <div class="cat-pill" onclick="filterByCategory('Küçük Ev Aletleri', this)">Küçük Ev Aletleri</div>
+    <div class="cat-pill" onclick="filterByCategory('Isıtma Soğutma ve Enerji', this)">Isıtma Soğutma ve Enerji</div>
     <div class="cat-pill" onclick="filterByCategory('Yedek Parça Ve Aksesuar', this)">Yedek Parça Ve Aksesuar</div>
     <div class="cat-pill" onclick="filterByCategory('Su Sebili & Su Arıtma', this)">Su Sebili & Su Arıtma</div>
     <div class="cat-pill" onclick="filterByCategory('Temizlik Ve Bakım Ürünleri', this)">Temizlik Ve Bakım Ürünleri</div>
     <div class="cat-pill" onclick="filterByCategory('Enerji Çözümleri', this)">Enerji Çözümleri</div>
-    <div class="cat-pill" onclick="filterByCategory('Evcil Hayvan Ürünleri', this)">Evcil Hayvan Ürünleri</div>
-    <div class="cat-pill" onclick="filterByCategory('UmutKent Koleksiyonu', this)">UmutKent Koleksiyonu</div>
-    <div class="cat-pill" onclick="filterByCategory('İz Bırak', this)">İz Bırak</div>
     <div class="cat-pill" onclick="filterByCategory('Spor ve Outdoor', this)">Spor ve Outdoor</div>
-    <div class="cat-pill" onclick="filterByCategory('Anne ve Bebek Ürünleri', this)">Anne ve Bebek Ürünleri</div>
   </div>
-  <div class="subcat-wrapper" id="subCategoryWrapper">
-  <div class="container">
-    <div class="subcat-scroll" id="subCategoryGrid"></div>
-  </div>
-</div>
 </nav>
 
 <div id="home-view">
@@ -283,12 +324,20 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
       <div class="head">
         <h2 id="listTitle">Tüm Ürünler</h2>
       </div>
+
+      <!-- ALT KATEGORİ ÇUBUĞU (VİTRİNİN HEMEN ÜSTÜNDE) -->
+      <div class="subcat-wrapper" id="subCategoryWrapper">
+        <div class="subcat-scroll" id="subCategoryGrid"></div>
+      </div>
       
       <div id="loading" class="loading-area">
         <p style="font-size:18px; color:var(--muted);">Ürünler Yükleniyor...</p>
       </div>
 
       <div class="product-grid" id="productGrid"></div>
+
+      <!-- SAYFALAMA (PAGINATION) BÖLÜMÜ -->
+      <div class="pagination" id="pagination"></div>
     </div>
   </div>
 
@@ -320,133 +369,8 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
     
     <div class="cart-footer">
       <div class="cart-total"><span>Toplam:</span> <span id="cartTotal">0,00 TL</span></div>
-      <button class="checkout-btn" id="openCheckoutModalBtn" onclick="openAddressModal()" style="display:none;">Siparişi Tamamla →</button>
+      <button class="checkout-btn" id="openCheckoutModalBtn" onclick="goToCheckout()" style="display:none;">Siparişi Tamamla →</button>
     </div>
-  </div>
-</div>
-
-<!-- ANKARA ADRES & İLETİŞİM FORMU (MODAL) -->
-<div class="checkout-modal" id="addressModal">
-  <div class="checkout-overlay" onclick="closeAddressModal()"></div>
-  <div class="checkout-card">
-    <div class="checkout-header">
-      <h3>Teslimat ve İletişim Bilgileri</h3>
-      <button class="checkout-close" onclick="closeAddressModal()">✕</button>
-    </div>
-
-    <form class="addr-form" onsubmit="handleOrderSubmit(event)">
-      <!-- İl ve İlçe Satırı -->
-      <div class="row-2">
-        <div class="input-box">
-          <fieldset>
-            <legend>İl</legend>
-            <select id="addrCity" disabled>
-              <option value="Ankara" selected>Ankara</option>
-            </select>
-          </fieldset>
-          <div class="city-note">✓ Bayimiz sadece Ankara içine teslimat yapmaktadır.</div>
-        </div>
-
-        <div class="input-box">
-          <fieldset>
-            <legend>İlçe</legend>
-            <select id="addrDistrict" required onchange="handleDistrictChange(this.value)">
-              <option value="">İlçe Seçiniz</option>
-              <option value="Mamak">Mamak</option>
-              <option value="Çankaya">Çankaya</option>
-              <option value="Keçiören">Keçiören</option>
-              <option value="Yenimahalle">Yenimahalle</option>
-              <option value="Etimesgut">Etimesgut</option>
-              <option value="Sincan">Sincan</option>
-              <option value="Altındağ">Altındağ</option>
-              <option value="Pursaklar">Pursaklar</option>
-              <option value="Gölbaşı">Gölbaşı</option>
-              <option value="Kahramankazan">Kahramankazan</option>
-              <option value="Akyurt">Akyurt</option>
-              <option value="Çubuk">Çubuk</option>
-              <option value="Elmadağ">Elmadağ</option>
-              <option value="Polatlı">Polatlı</option>
-              <option value="Beypazarı">Beypazarı</option>
-            </select>
-          </fieldset>
-        </div>
-      </div>
-
-      <!-- Mahalle Satırı -->
-      <div class="input-box">
-        <fieldset>
-          <legend>Mahalle</legend>
-          <select id="addrNeighborhood" required>
-            <option value="">Önce ilçe seçiniz...</option>
-          </select>
-        </fieldset>
-      </div>
-
-      <!-- Bina No, Kat, Daire No Satırı -->
-      <div class="row-3">
-        <div class="input-box">
-          <fieldset>
-            <legend>Bina No</legend>
-            <input type="text" id="addrBuildingNo" required placeholder="Bina No">
-          </fieldset>
-        </div>
-        <div class="input-box">
-          <fieldset>
-            <legend>Kat</legend>
-            <input type="text" id="addrFloor" required placeholder="Kat">
-          </fieldset>
-        </div>
-        <div class="input-box">
-          <fieldset>
-            <legend>Daire No</legend>
-            <input type="text" id="addrApartmentNo" required placeholder="Daire No">
-          </fieldset>
-        </div>
-      </div>
-
-      <!-- Adres Tarifi -->
-      <div class="input-box">
-        <fieldset>
-          <legend>Adres Tarifi</legend>
-          <input type="text" id="addrDesc" placeholder="Örn: Parkın karşısı, sarı apartman">
-        </fieldset>
-      </div>
-
-      <!-- Adres Başlığı -->
-      <div class="input-box">
-        <fieldset>
-          <legend>Adres Başlığı (Ev Adresim, İş Adresim)</legend>
-          <input type="text" id="addrTitle" placeholder="Örn: Ev Adresim, İşyerim">
-        </fieldset>
-      </div>
-
-      <!-- İletişim Bilgileri -->
-      <div class="section-label">İletişim Bilgileri</div>
-
-      <div class="row-2">
-        <div class="input-box">
-          <fieldset>
-            <legend>Adınız</legend>
-            <input type="text" id="addrFirstName" required placeholder="Adınız">
-          </fieldset>
-        </div>
-        <div class="input-box">
-          <fieldset>
-            <legend>Soyadınız</legend>
-            <input type="text" id="addrLastName" required placeholder="Soyadınız">
-          </fieldset>
-        </div>
-      </div>
-
-      <div class="input-box">
-        <fieldset>
-          <legend>Cep Telefonu</legend>
-          <input type="tel" id="addrPhone" required placeholder="05XX XXX XX XX">
-        </fieldset>
-      </div>
-
-      <button type="submit" class="submit-order-btn" id="confirmOrderBtn">Siparişi Onayla ve Gönder</button>
-    </form>
   </div>
 </div>
 
@@ -477,19 +401,28 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
 
 <script>
 let allProducts = [];
+let filteredProductsList = [];
 let cart = JSON.parse(localStorage.getItem('beko_cart')) || [];
 let currentCategory = 'Tümü';
+let currentSubCategory = 'Tümü';
 
-const ankaraMahalleleri = {
-  "Mamak": ["Harman Mah", "Akdere Mah", "Abidinpaşa Mah", "Demirlibahçe Mah", "Durali Alıç Mah", "General Zeki Doğan Mah", "Kayaş Mah", "Saimekadın Mah", "Tuzluçayır Mah", "Şafaktepe Mah", "Yeşilbayır Mah", "Cengizhan Mah", "Fahri Korutürk Mah", "Diğer Mahalle"],
-  "Etimesgut": ["Ahi Mesut Mah", "Alsancak Mah", "Altay Mah", "Atakent Mah", "Bağlıca Mah", "Elvan Mah", "Erler Mah", "Eryaman Mah", "Güzelkent Mah", "İstasyon Mah", "Kazım Karabekir Mah", "Piyade Mah", "Süvari Mah", "Şehit Osman Avcı Mah", "Topçu Mah", "Tunahan Mah", "Yavuz Selim Mah", "Zirve Mah", "Diğer Mahalle"],
-  "Çankaya": ["Bahçelievler Mah", "Balgat Mah", "Birlik Mah", "Çayyolu Mah", "Dikmen Mah", "Emek Mah", "Gaziosmanpaşa Mah", "Kızılay Mah", "Kavaklıdere Mah", "Mutlukent Mah", "Öveçler Mah", "Söğütözü Mah", "Tunalı Mah", "Ümitköy Mah", "Yıldız Mah", "Diğer Mahalle"],
-  "Keçiören": ["Aktepe Mah", "Aşağı Eğlence Mah", "Ayvalı Mah", "Bağlum Mah", "Esertepe Mah", "Etlik Mah", "İncirli Mah", "Kalaba Mah", "Kuşcağız Mah", "Ovacık Mah", "Sanatoryum Mah", "Uyanış Mah", "Yükseltepe Mah", "Diğer Mahalle"],
-  "Yenimahalle": ["Batıkent Mah", "Çamlıca Mah", "Demetevler Mah", "Ergazi Mah", "İnönü Mah", "Kardelen Mah", "Macun Mah", "Ostim Mah", "Ragıp Tüzün Mah", "Uğur Mumcu Mah", "Varlık Mah", "Yeni Batı Mah", "Diğer Mahalle"],
-  "Sincan": ["Fatih Mah", "Gazi Osman Paşa Mah", "Mareşal Çakmak Mah", "Plevne Mah", "Saraycık Mah", "Tandoğan Mah", "Ulubatlı Hasan Mah", "Yenikent Mah", "Diğer Mahalle"],
-  "Altındağ": ["Anafartalar Mah", "Aydınlıkevler Mah", "Doğantepe Mah", "Güneşevler Mah", "Hacı Bayram Mah", "Karapürçek Mah", "Önder Mah", "Siteler Mah", "Ulus Mah", "Zübeyde Hanım Mah", "Diğer Mahalle"],
-  "Pursaklar": ["Fatih Mah", "Merkez Mah", "Mimar Sinan Mah", "Saray Mah", "Tevfik İleri Mah", "Yunus Emre Mah", "Diğer Mahalle"],
-  "Gölbaşı": ["Bahçelievler Mah", "İncek Mah", "Karşıyaka Mah", "Kızılcaşar Mah", "Örencik Mah", "Seğmenler Mah", "Şafak Mah", "Diğer Mahalle"]
+// SAYFALAMA DEĞİŞKENLERİ
+let currentPage = 1;
+const PRODUCTS_PER_PAGE = 6;
+
+// TÜM ALT KATEGORİ HARİTASI
+const categorySubMap = {
+  "Beyaz Eşya": ["Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi", "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Set Üstü Ocak", "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"],
+  "Ankastre": ["Ankastre Ocak", "Ankastre Davlumbazlar", "Ankastre Aspiratörler", "Ankastre Bulaşık Makineleri", "Ankastre Buzdolabı", "Ankastre Fırın", "Ankastre Mikrodalgalar", "Ankastre Set", "Pişirici Yedek Parça ve Aksesuarları"],
+  "Televizyon": ["OLED TV", "QLED", "Yapay Zeka TV", "Oyun TV", "Dev Ekran TV", "Smart TV", "Google TV", "Full HD& HD TV", "4K TV", "LED TV", "Mutfak Televizyonu", "Hotel Tv", "Grundig TV", "Philips TV", "TCL TV"],
+  "Elektronik": ["Bilgisayar", "Hobi - Oyun (Gaming) Ürünleri", "Ses& Görüntü Sistemleri", "Ödeme Sistemleri", "Cep Telefonu", "Cep Telefonu Aksesuarları", "Giyilebilir Teknoloji"],
+  "Küçük Ev Aletleri": ["Kahve Makinesi", "Dondurma Makinesi", "Pişirici", "Outdoor Ekipman", "Kişisel Bakım", "Elektrikli Süpürge", "Ütü", "Karıştırıcı& Doğrayıcı", "UV Temizleme Cihazı", "Yoğurt &Kefir Makinesi", "Kettle", "Katı Meyve Sıkacağı", "Narenciye Sıkacağı", "Çay Makinesi", "Semaver", "Buz Makinesi", "Küçük Ev Aletleri Yedek Parça ve Aksesuarları", "Küçük Ev Aletleri Seti", "Ev Temizlik Ekipmanları ve Teknolojileri", "Güzellik ve Bakım", "Kahve ve Sofra Ürünleri", "Frozen ve Slush Makinesi"],
+  "Yedek Parça Ve Aksesuar": ["Aksesuarlar", "Isıtma Soğutma Yedek Parça ve Aksesuarları", "Beyaz Eşya Yedek Parça ve Aksesuarları", "Televizyon Aksesuarları", "Küçük Ev Aletleri Yedek Parça ve Aksesuarları"],
+  "Isıtma Soğutma ve Enerji": ["Klima", "Hava Temizleyici", "Hava Soğutucu", "Vantilatör", "Elektrikli Isıtıcı", "Termosifon", "Kombi", "Nem Alma Cihazı", "Isıtma Soğutma Yedek Parça ve Aksesuarları"],
+  "Su Sebili & Su Arıtma": ["Su Arıtma Cihazı", "Su Sebili"],
+  "Temizlik Ve Bakım Ürünleri": ["Diğer Temizlik Ürünleri", "Kurutma Makinesi Temizlik ve Bakım Ürünleri", "Davlumbaz & Aspiratör Temizlik ve Bakım Ürünleri", "Klima Temizlik ve Bakım Ürünleri", "TV & Bilgisayar Temizlik ve Bakım Ürünleri", "Küçük Ev Aleti Temizlik ve Bakım Ürünleri", "Buzdolabı Temizlik ve Bakım Ürünleri", "Ocak ve Fırın Temizlik ve Bakım Ürünleri", "Çamaşır Makinesi Temizlik ve Bakım Ürünleri", "Bulaşık Makinesi Temizlik ve Bakım Ürünleri", "Temizlik ve Bakım Ürünleri Set"],
+  "Enerji Çözümleri": ["Güneş Paneli", "Inverter", "Sun Junior (Enerji Depolama Sistemi)", "Güç Kaynağı UPS", "Taşınabilir Güneş Paneli", "Isı Pompası", "Elektrikli Araç Şarj İstasyonu"],
+  "Spor ve Outdoor": ["Elektrikli Scooter", "Kamp ve Outdoor Ekipmanları", "Elektrikli Bisiklet", "Araç Buzdolabı", "Deniz & Su Sporları Ekipmanları"]
 };
 
 window.onload = () => {
@@ -513,60 +446,166 @@ async function fetchProductsFromDatabase() {
         }));
 
         document.getElementById('loading').style.display = 'none';
-        renderProducts(allProducts);
+        applyFilters();
     } catch (error) {
         document.getElementById('loading').innerHTML = `<b style="color:red">Sunucuya bağlanılamadı. Lütfen 'node server.js' komutunu çalıştırdığınızdan emin olun.</b>`;
     }
 }
 
+// ANA KATEGORİ DEĞİŞTİĞİNDE ÇALIŞIR
 function filterByCategory(catName, element) {
     currentCategory = catName;
+    currentSubCategory = 'Tümü';
+    currentPage = 1;
+
     document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
     if(element) element.classList.add('active');
+
     document.getElementById('listTitle').innerText = catName === 'Tümü' ? 'Tüm Ürünler' : catName;
 
-    if(catName === 'Tümü') {
-        renderProducts(allProducts);
+    const subWrapper = document.getElementById('subCategoryWrapper');
+    const subGrid = document.getElementById('subCategoryGrid');
+
+    if (categorySubMap[catName] && categorySubMap[catName].length > 0) {
+        subWrapper.style.display = 'block';
+        
+        let html = `
+          <div class="subcat-card active" onclick="filterBySubCategory('Tümü', this)">
+            <span>Tümü</span>
+          </div>
+        `;
+
+        categorySubMap[catName].forEach(sub => {
+            html += `
+              <div class="subcat-card" onclick="filterBySubCategory('${sub}', this)">
+                <span>${sub}</span>
+              </div>
+            `;
+        });
+
+        subGrid.innerHTML = html;
     } else {
-        const filtered = allProducts.filter(p => p.category.toLowerCase() === catName.toLowerCase());
-        renderProducts(filtered);
+        subWrapper.style.display = 'none';
+        subGrid.innerHTML = '';
     }
+
+    applyFilters();
+}
+
+// ALT KATEGORİ TIKLANDIĞINDA ÇALIŞIR
+function filterBySubCategory(subName, element) {
+    currentSubCategory = subName;
+    currentPage = 1;
+    document.querySelectorAll('.subcat-card').forEach(c => c.classList.remove('active'));
+    if(element) element.classList.add('active');
+    applyFilters();
+}
+
+// FİLTRELEME MANTIĞI
+function applyFilters() {
+    let filtered = allProducts;
+
+    if (currentCategory !== 'Tümü') {
+        filtered = filtered.filter(p => p.category && p.category.toLowerCase() === currentCategory.toLowerCase());
+    }
+
+    if (currentSubCategory !== 'Tümü') {
+        filtered = filtered.filter(p => {
+            if (p.subCategory && p.subCategory.toLowerCase() === currentSubCategory.toLowerCase()) {
+                return true;
+            }
+            const cleanSub = currentSubCategory.toLowerCase().replace(/&/g, '').replace(/ve/g, '').trim();
+            return p.title.toLowerCase().includes(cleanSub) || p.title.toLowerCase().includes(currentSubCategory.toLowerCase());
+        });
+    }
+
+    filteredProductsList = filtered;
+    renderCurrentPage();
+}
+
+// SAYFALAMA VE EKRANA BASMA FONKSİYONU (Her Sayfada 6 Ürün)
+function renderCurrentPage(scrollToTop = false) {
+    const grid = document.getElementById('productGrid');
+    const paginationEl = document.getElementById('pagination');
+    grid.innerHTML = '';
+
+    if (filteredProductsList.length === 0) {
+        grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:40px; color:#69778b">Henüz bu kriterlere uygun ürün bulunamadı.</p>';
+        paginationEl.innerHTML = '';
+        return;
+    }
+
+    const totalPages = Math.ceil(filteredProductsList.length / PRODUCTS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const endIndex = startIndex + PRODUCTS_PER_PAGE;
+    const pageProducts = filteredProductsList.slice(startIndex, endIndex);
+
+    pageProducts.forEach(p => {
+        let stockColor = p.stock === 'Tükendi' ? '#e53935' : '#16a36a';
+        grid.innerHTML += `
+          <div class="product">
+            <div class="photo"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+            <div class="brandline">BEKO • ${p.category} <span style="float:right; color:${stockColor};">${p.stock}</span></div>
+            <h3>${p.title}</h3>
+            <div class="price">${p.priceStr}</div>
+            <div class="product-actions">
+              <button class="buy" onclick="addToCart('${p.id}')">Sepete Ekle</button>
+              <button class="info" onclick="window.location.href='/urun.html?id=${p.id}'">İncele</button>
+            </div>
+          </div>
+        `;
+    });
+
+    renderPaginationControls(totalPages);
+
+    if (scrollToTop) {
+        document.getElementById('productList').scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// SAYFALAMA BUTONLARINI ÇİZER
+function renderPaginationControls(totalPages) {
+    const paginationEl = document.getElementById('pagination');
+    if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+    }
+
+    let html = `
+      <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹ Önceki</button>
+    `;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `
+          <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>
+        `;
+    }
+
+    html += `
+      <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Sonraki ›</button>
+    `;
+
+    paginationEl.innerHTML = html;
+}
+
+function changePage(page) {
+    currentPage = page;
+    renderCurrentPage(true);
 }
 
 function showHome() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.getElementById('searchInput').value = '';
     document.getElementById('searchResults').style.display = 'none';
+    filterByCategory('Tümü', document.querySelector('.cat-pill'));
 }
 
-function renderProducts(productsToRender) {
-  const grid = document.getElementById('productGrid');
-  grid.innerHTML = '';
-  
-  if(productsToRender.length === 0) {
-      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:40px; color:#69778b">Henüz bu kategoride ürün eklenmemiş.</p>';
-      return;
-  }
-
-  productsToRender.forEach(p => {
-    let stockColor = p.stock === 'Tükendi' ? '#e53935' : '#16a36a';
-    grid.innerHTML += `
-      <div class="product">
-        <div class="photo"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
-        <div class="brandline">BEKO • ${p.category} <span style="float:right; color:${stockColor};">${p.stock}</span></div>
-        <h3>${p.title}</h3>
-        <div class="price">${p.priceStr}</div>
-        <div class="product-actions">
-          <button class="buy" onclick="addToCart('${p.id}')">Sepete Ekle</button>
-          <button class="info" onclick="window.location.href='/urun.html?id=${p.id}'">İncele</button>
-        </div>
-      </div>
-    `;
-  });
-}
-
+// ARAMA DİNLİYİCİSİ
 document.getElementById('searchInput').addEventListener('input', function(e) {
-  const term = e.target.value.toLowerCase();
+  const term = e.target.value.toLowerCase().trim();
   const resultsContainer = document.getElementById('searchResults');
   
   if(!term) {
@@ -660,105 +699,9 @@ function updateCartUI() {
 function openCart() { document.getElementById('cartDrawer').classList.add('open'); }
 function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); }
 
-function openAddressModal() {
+function goToCheckout() {
   if (cart.length === 0) return openModal('Hata', 'Sepetiniz şu an boş.');
   window.location.href = '/checkout.html';
-}
-
-function closeAddressModal() {
-  document.getElementById('addressModal').classList.remove('open');
-}
-
-function handleDistrictChange(district) {
-  const neighborhoodSelect = document.getElementById('addrNeighborhood');
-  neighborhoodSelect.innerHTML = '<option value="">Mahalle Seçiniz</option>';
-  
-  if(!district) {
-    neighborhoodSelect.innerHTML = '<option value="">Önce ilçe seçiniz...</option>';
-    return;
-  }
-  
-  const neighborhoods = ankaraMahalleleri[district] || ["Merkez Mah", "Cumhuriyet Mah", "Yeni Mah", "Atatürk Mah", "Diğer Mahalle"];
-  neighborhoods.forEach(mah => {
-    neighborhoodSelect.innerHTML += `<option value="${mah}">${mah}</option>`;
-  });
-}
-
-async function handleOrderSubmit(e) {
-  e.preventDefault();
-  if(cart.length === 0) return openModal('Hata', 'Sepetiniz boş.');
-
-  const city = "Ankara";
-  const district = document.getElementById('addrDistrict').value;
-  const neighborhood = document.getElementById('addrNeighborhood').value;
-  const buildingNo = document.getElementById('addrBuildingNo').value.trim();
-  const floor = document.getElementById('addrFloor').value.trim();
-  const apartmentNo = document.getElementById('addrApartmentNo').value.trim();
-  const addressDesc = document.getElementById('addrDesc').value.trim();
-  const addressTitle = document.getElementById('addrTitle').value.trim() || 'Ev Adresi';
-  
-  const firstName = document.getElementById('addrFirstName').value.trim();
-  const lastName = document.getElementById('addrLastName').value.trim();
-  const phone = document.getElementById('addrPhone').value.trim();
-
-  if(!district || !neighborhood || !buildingNo || !floor || !apartmentNo || !firstName || !lastName || !phone) {
-    alert('Lütfen zorunlu alanların tamamını doldurunuz.');
-    return;
-  }
-
-  const formattedAddress = `${neighborhood}, Bina No: ${buildingNo}, Kat: ${floor}, Daire: ${apartmentNo}, ${district} / ${city}` + 
-                           (addressDesc ? ` (Tarif: ${addressDesc})` : '') + 
-                           (addressTitle ? ` [${addressTitle}]` : '');
-
-  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-  const orderData = {
-    customerName: `${firstName} ${lastName}`,
-    firstName,
-    lastName,
-    phone,
-    address: formattedAddress,
-    addressDetails: {
-      city,
-      district,
-      neighborhood,
-      buildingNo,
-      floor,
-      apartmentNo,
-      addressDesc,
-      addressTitle
-    },
-    products: cart,
-    totalPrice
-  };
-
-  const btn = document.getElementById('confirmOrderBtn');
-  btn.innerText = 'Sipariş İletiliyor...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    });
-
-    if(res.ok) {
-      closeAddressModal();
-      cart = [];
-      saveCart();
-      e.target.reset();
-      handleDistrictChange('');
-      openModal('Siparişiniz Alındı!', 'Beko Mamak Bayii siparişiniz başarıyla alındı ve yönetim paneline iletildi. En kısa sürede sizinle iletişime geçeceğiz.');
-    } else {
-      alert('Sipariş iletilirken bir hata oluştu.');
-    }
-  } catch(err) {
-    alert('Sunucu bağlantı hatası: ' + err.message);
-  } finally {
-    btn.innerText = 'Siparişi Onayla ve Gönder';
-    btn.disabled = false;
-  }
 }
 
 function openModal(title, text) {
@@ -779,146 +722,6 @@ function footerCategory(catName) {
 function footerSupport() {
   openModal('Destek', 'Teslimat, kurulum, iade ve diğer işlemler için mağazamızdan güncel bilgi alabilirsiniz. Tel: 0534 834 24 24');
 }
-
-//TÜM ALT KATEGORİLERİN VERİ HARİTASI
-const categorySubMap = {
-  "Beyaz Eşya": [
-    "Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi",
-    "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Mikrodalga Fırın", "Set Üstü Ocak",
-    "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"
-  ],
-  "Ankastre": [
-    "Ankastre Ocak", "Ankastre Davlumbazlar", "Ankastre Aspiratörler",
-    "Ankastre Bulaşık Makineleri", "Ankastre Buzdolabı", "Ankastre Fırın",
-    "Ankastre Mikrodalgalar", "Ankastre Set", "Pişirici Yedek Parça ve Aksesuarları"
-  ],
-  "Televizyon": [
-    "OLED TV", "QLED", "Yapay Zeka TV", "Oyun TV", "Dev Ekran TV", "Smart TV",
-    "Google TV", "Full HD& HD TV", "4K TV", "LED TV", "Mutfak Televizyonu",
-    "Hotel Tv", "Grundig TV", "Philips TV", "TCL TV"
-  ],
-  "Elektronik": [
-    "Bilgisayar", "Hobi - Oyun (Gaming) Ürünleri", "Ses& Görüntü Sistemleri",
-    "Ödeme Sistemleri", "Cep Telefonu", "Cep Telefonu Aksesuarları", "Giyilebilir Teknoloji"
-  ],
-  "Küçük Ev Aletleri": [
-    "Kahve Makinesi", "Dondurma Makinesi", "Pişirici", "Outdoor Ekipman",
-    "Kişisel Bakım", "Elektrikli Süpürge", "Ütü", "Karıştırıcı& Doğrayıcı",
-    "UV Temizleme Cihazı", "Yoğurt &Kefir Makinesi", "Kettle", "Katı Meyve Sıkacağı",
-    "Narenciye Sıkacağı", "Çay Makinesi", "Semaver", "Buz Makinesi",
-    "Küçük Ev Aletleri Yedek Parça ve Aksesuarları", "Küçük Ev Aletleri Seti",
-    "Ev Temizlik Ekipmanları ve Teknolojileri", "Güzellik ve Bakım",
-    "Kahve ve Sofra Ürünleri", "Frozen ve Slush Makinesi"
-  ],
-  "Yedek Parça Ve Aksesuar": [
-    "Aksesuarlar", "Isıtma Soğutma Yedek Parça ve Aksesuarları",
-    "Beyaz Eşya Yedek Parça ve Aksesuarları", "Televizyon Aksesuarları",
-    "Küçük Ev Aletleri Yedek Parça ve Aksesuarları"
-  ],
-  "Isıtma Soğutma ve Enerji": [
-    "Klima", "Hava Temizleyici", "Hava Soğutucu", "Vantilatör",
-    "Elektrikli Isıtıcı", "Termosifon", "Kombi", "Nem Alma Cihazı",
-    "Isıtma Soğutma Yedek Parça ve Aksesuarları"
-  ],
-  "Su Sebili & Su Arıtma": [
-    "Su Arıtma Cihazı", "Su Sebili"
-  ],
-  "Temizlik Ve Bakım Ürünleri": [
-    "Diğer Temizlik Ürünleri", "Kurutma Makinesi Temizlik ve Bakım Ürünleri",
-    "Davlumbaz & Aspiratör Temizlik ve Bakım Ürünleri", "Klima Temizlik ve Bakım Ürünleri",
-    "TV & Bilgisayar Temizlik ve Bakım Ürünleri", "Küçük Ev Aleti Temizlik ve Bakım Ürünleri",
-    "Buzdolabı Temizlik ve Bakım Ürünleri", "Ocak ve Fırın Temizlik ve Bakım Ürünleri",
-    "Çamaşır Makinesi Temizlik ve Bakım Ürünleri", "Bulaşık Makinesi Temizlik ve Bakım Ürünleri",
-    "Temizlik ve Bakım Ürünleri Set"
-  ],
-  "Enerji Çözümleri": [
-    "Güneş Paneli", "Inverter", "Sun Junior (Enerji Depolama Sistemi)",
-    "Güç Kaynağı UPS", "Taşınabilir Güneş Paneli", "Isı Pompası",
-    "Elektrikli Araç Şarj İstasyonu"
-  ],
-  "Spor ve Outdoor": [
-    "Elektrikli Scooter", "Kamp ve Outdoor Ekipmanları",
-    "Elektrikli Bisiklet", "Araç Buzdolabı", "Deniz & Su Sporları Ekipmanları"
-  ]
-};
-
-let currentSubCategory = 'Tümü';
-
-// Ana kategori tıklandığında çalışan güncel fonksiyon
-function filterByCategory(catName, element) {
-    currentCategory = catName;
-    currentSubCategory = 'Tümü';
-
-    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
-    if(element) element.classList.add('active');
-
-    document.getElementById('listTitle').innerText = catName === 'Tümü' ? 'Tüm Ürünler' : catName;
-
-    const subWrapper = document.getElementById('subCategoryWrapper');
-    const subGrid = document.getElementById('subCategoryGrid');
-
-    if (categorySubMap[catName] && categorySubMap[catName].length > 0) {
-        subWrapper.style.display = 'block';
-        
-        let html = `
-          <div class="subcat-card active" onclick="filterBySubCategory('Tümü', this)">
-            <span style="font-weight:700;">Tümü</span>
-          </div>
-        `;
-
-        categorySubMap[catName].forEach(sub => {
-            html += `
-              <div class="subcat-card" onclick="filterBySubCategory('${sub}', this)">
-                <span>${sub}</span>
-              </div>
-            `;
-        });
-
-        subGrid.innerHTML = html;
-    } else {
-        subWrapper.style.display = 'none';
-        subGrid.innerHTML = '';
-    }
-
-    applyFilters();
-}
-
-// Alt kategori kartına tıklandığında çalışan fonksiyon
-function filterBySubCategory(subName, element) {
-    currentSubCategory = subName;
-    document.querySelectorAll('.subcat-card').forEach(c => c.classList.remove('active'));
-    if(element) element.classList.add('active');
-    applyFilters();
-}
-
-// Filtreleri uygulayan fonksiyon (Akıllı isim eşleme destekli)
-function applyFilters() {
-    let filtered = allProducts;
-
-    // 1. Ana Kategori Filtresi
-    if (currentCategory !== 'Tümü') {
-        filtered = filtered.filter(p => p.category && p.category.toLowerCase() === currentCategory.toLowerCase());
-    }
-
-    // 2. Alt Kategori Filtresi
-    if (currentSubCategory !== 'Tümü') {
-        filtered = filtered.filter(p => {
-            // Veritabanında subCategory seçilmişse doğrudan eşleştir
-            if (p.subCategory && p.subCategory.toLowerCase() === currentSubCategory.toLowerCase()) {
-                return true;
-            }
-            // Seçilmemişse ürün başlığından yakala
-            const cleanSub = currentSubCategory.toLowerCase()
-              .replace(/&/g, '')
-              .replace(/ve/g, '')
-              .trim();
-            return p.title.toLowerCase().includes(cleanSub) || p.title.toLowerCase().includes(currentSubCategory.toLowerCase());
-        });
-    }
-
-    renderProducts(filtered);
-}
-
 </script>
 </body>
 </html>
