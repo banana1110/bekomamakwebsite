@@ -51,6 +51,7 @@ const productSchema = new mongoose.Schema({
     title: String,
     price: Number,
     category: String,
+    subCategory: { type: String, default: '' },
     img: String,
     images: [String],
     stock: String,
@@ -123,7 +124,7 @@ app.get('/api/products/:id', async (req, res) => {
 
 app.post('/api/products', async (req, res) => {
     try {
-        const { title, price, category, images, stock, warranty, description } = req.body;
+        const { title, price, category, subCategory, images, stock, warranty, description } = req.body;
         const mainImg = (images && images.length > 0) ? images[0] : 'https://via.placeholder.com/400';
         
         const newProduct = new Product({
