@@ -33,7 +33,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .icon-btn:hover{border-color:#c5d4e5;box-shadow:0 5px 18px rgba(0,0,0,.06)}
 .count{position:absolute;right:-5px;top:-6px;background:#e53935;color:#fff;font-size:10px;min-width:18px;height:18px;border-radius:99px;display:none;place-items:center;font-weight:bold;}
 
-/* Kategori Çubuğu */
+/* Ana Kategori Çubuğu */
 .cat-bar {
     background: #f8fafc;
     border-bottom: 1px solid var(--line);
@@ -77,9 +77,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
     font-weight: 700;
 }
 
-/* Alt Kategori Kartları */
+/* Alt Kategori Çubuğu (Ana Kategori Çubuğunun Hemen Altında) */
 .subcat-wrapper {
-  margin: 10px 0 24px 0;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
   display: none;
 }
 .subcat-scroll {
@@ -87,18 +89,18 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
   flex-direction: row !important;
   gap: 10px;
   overflow-x: auto;
-  padding: 6px 2px 14px 2px;
+  padding: 4px 0 8px 0;
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
 }
-.subcat-scroll::-webkit-scrollbar { height: 6px; }
+.subcat-scroll::-webkit-scrollbar { height: 5px; }
 .subcat-scroll::-webkit-scrollbar-thumb { background: #dce3eb; border-radius: 4px; }
 .subcat-card {
   flex: 0 0 auto;
-  background: #fff;
+  background: #f8fafc;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 18px;
+  border-radius: 10px;
+  padding: 8px 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -106,13 +108,13 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
   transition: all .2s ease;
   user-select: none;
   white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  box-shadow: 0 1px 3px rgba(0,0,0,.02);
 }
 .subcat-card:hover {
   border-color: var(--blue);
   color: var(--blue);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(8,118,209,.12);
+  background: #fff;
+  transform: translateY(-1px);
 }
 .subcat-card.active {
   border-color: var(--blue);
@@ -157,7 +159,6 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
 .head h2{font-size:28px;letter-spacing:-.8px}
 
-/* Sıralama Açılır Menüsü (Dropdown) */
 .sort-wrap{display:flex;align-items:center;gap:8px;}
 .sort-wrap label{font-size:13px;color:var(--muted);font-weight:700;}
 .sort-select{height:40px;border:1px solid #dce3eb;border-radius:10px;padding:0 12px;background:#fff;color:var(--ink);font-size:13px;font-weight:600;outline:none;cursor:pointer;}
@@ -275,6 +276,7 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
   </div>
 </header>
 
+<!-- ANA KATEGORİ ÇUBUĞU -->
 <nav class="cat-bar">
   <div class="container" id="categoryContainer">
     <div class="cat-pill active" onclick="filterByCategory('Tümü', this)">Tüm Ürünler</div>
@@ -291,6 +293,13 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
     <div class="cat-pill" onclick="filterByCategory('Spor ve Outdoor', this)">Spor ve Outdoor</div>
   </div>
 </nav>
+
+<!-- ALT KATEGORİ ÇUBUĞU (ANA KATEGORİ ÇUBUĞUNUN HEMEN ALTINDA) -->
+<div class="subcat-wrapper" id="subCategoryWrapper">
+  <div class="container">
+    <div class="subcat-scroll" id="subCategoryGrid"></div>
+  </div>
+</div>
 
 <div id="home-view">
   
@@ -331,7 +340,6 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
       <div class="head">
         <h2 id="listTitle">Tüm Ürünler</h2>
         
-        <!-- SIRALAMA SEÇENEKLERİ -->
         <div class="sort-wrap">
           <label for="sortSelect">Sırala:</label>
           <select id="sortSelect" class="sort-select" onchange="handleSortChange(this.value)">
@@ -342,11 +350,6 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
           </select>
         </div>
       </div>
-
-      <!-- ALT KATEGORİ ÇUBUĞU -->
-      <div class="subcat-wrapper" id="subCategoryWrapper">
-        <div class="subcat-scroll" id="subCategoryGrid"></div>
-      </div>
       
       <div id="loading" class="loading-area">
         <p style="font-size:18px; color:var(--muted);">Ürünler Yükleniyor...</p>
@@ -354,7 +357,6 @@ footer .link{color:var(--blue);font-weight:800;font-size:13px;border:0;backgroun
 
       <div class="product-grid" id="productGrid"></div>
 
-      <!-- SAYFALAMA BÖLÜMÜ -->
       <div class="pagination" id="pagination"></div>
     </div>
   </div>
@@ -425,11 +427,9 @@ let currentCategory = 'Tümü';
 let currentSubCategory = 'Tümü';
 let currentSort = 'default';
 
-// SAYFALAMA DEĞİŞKENLERİ
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 6;
 
-// TÜM ALT KATEGORİ HARİTASI
 const categorySubMap = {
   "Beyaz Eşya": ["Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi", "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Set Üstü Ocak", "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"],
   "Ankastre": ["Ankastre Ocak", "Ankastre Davlumbazlar", "Ankastre Aspiratörler", "Ankastre Bulaşık Makineleri", "Ankastre Buzdolabı", "Ankastre Fırın", "Ankastre Mikrodalgalar", "Ankastre Set", "Pişirici Yedek Parça ve Aksesuarları"],
@@ -471,7 +471,6 @@ async function fetchProductsFromDatabase() {
     }
 }
 
-// ANA KATEGORİ DEĞİŞTİĞİNDE ÇALIŞIR
 function filterByCategory(catName, element) {
     currentCategory = catName;
     currentSubCategory = 'Tümü';
@@ -511,7 +510,6 @@ function filterByCategory(catName, element) {
     applyFilters();
 }
 
-// ALT KATEGORİ TIKLANDIĞINDA ÇALIŞIR
 function filterBySubCategory(subName, element) {
     currentSubCategory = subName;
     currentPage = 1;
@@ -520,23 +518,19 @@ function filterBySubCategory(subName, element) {
     applyFilters();
 }
 
-// SIRALAMA SEÇİMİ DEĞİŞTİĞİNDE ÇALIŞIR
 function handleSortChange(sortValue) {
     currentSort = sortValue;
     currentPage = 1;
     applyFilters();
 }
 
-// FİLTRELEME VE SIRALAMA MANTIĞI
 function applyFilters() {
     let filtered = [...allProducts];
 
-    // 1. Ana Kategori Filtresi
     if (currentCategory !== 'Tümü') {
         filtered = filtered.filter(p => p.category && p.category.toLowerCase() === currentCategory.toLowerCase());
     }
 
-    // 2. Alt Kategori Filtresi
     if (currentSubCategory !== 'Tümü') {
         filtered = filtered.filter(p => {
             if (p.subCategory && p.subCategory.toLowerCase() === currentSubCategory.toLowerCase()) {
@@ -547,12 +541,10 @@ function applyFilters() {
         });
     }
 
-    // 3. Sıralama Mantığı (Tükenenler her zaman en sonda)
     filtered.sort((a, b) => {
         const aOutOfStock = a.stock === 'Tükendi' ? 1 : 0;
         const bOutOfStock = b.stock === 'Tükendi' ? 1 : 0;
 
-        // Tükenen ürünleri her zaman listenin sonuna öteler
         if (aOutOfStock !== bOutOfStock) {
             return aOutOfStock - bOutOfStock;
         }
@@ -564,7 +556,6 @@ function applyFilters() {
         } else if (currentSort === 'newest') {
             return b.id.localeCompare(a.id);
         } else {
-            // 'default' (Önerilen): ID bazlı en yeniler önde
             return b.id.localeCompare(a.id);
         }
     });
@@ -573,7 +564,6 @@ function applyFilters() {
     renderCurrentPage();
 }
 
-// SAYFALAMA VE EKRANA BASMA (Her Sayfada 6 Ürün)
 function renderCurrentPage(scrollToTop = false) {
     const grid = document.getElementById('productGrid');
     const paginationEl = document.getElementById('pagination');
@@ -616,7 +606,6 @@ function renderCurrentPage(scrollToTop = false) {
     }
 }
 
-// SAYFALAMA BUTONLARI
 function renderPaginationControls(totalPages) {
     const paginationEl = document.getElementById('pagination');
     if (totalPages <= 1) {
@@ -655,7 +644,6 @@ function showHome() {
     filterByCategory('Tümü', document.querySelector('.cat-pill'));
 }
 
-// ARAMA DİNLEYİCİSİ
 document.getElementById('searchInput').addEventListener('input', function(e) {
   const term = e.target.value.toLowerCase().trim();
   const resultsContainer = document.getElementById('searchResults');

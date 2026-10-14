@@ -25,6 +25,19 @@ th{background:#f8fafc}
 #adminPanel{display:none}
 .section-title{margin-top:40px;font-size:20px;border-bottom:2px solid #e5eaf0;padding-bottom:10px;color:var(--ink);}
 
+/* Ürünler Başlık ve Arama Alanı */
+.table-header-row{display:flex; justify-content:space-between; align-items:center; margin-top:40px; border-bottom:2px solid #e5eaf0; padding-bottom:10px;}
+.table-header-row h2{font-size:20px; color:var(--ink); margin:0;}
+.admin-search-input{width:260px; height:38px; border:2px solid var(--line); border-radius:8px; padding:0 12px; font-size:13px; outline:none;}
+.admin-search-input:focus{border-color:var(--blue);}
+
+/* Sayfalama (Pagination) */
+.pagination{display:flex; justify-content:center; align-items:center; gap:6px; margin-top:20px; user-select:none;}
+.page-btn{min-width:36px; height:36px; padding:0 10px; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:8px; font-weight:bold; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+.page-btn:hover:not(:disabled){border-color:var(--blue); color:var(--blue);}
+.page-btn.active{background:var(--blue); color:#fff; border-color:var(--blue);}
+.page-btn:disabled{opacity:.4; cursor:not-allowed;}
+
 #imgPreviewContainer {display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
 .preview-box {position:relative; width:90px; height:90px; border:1px solid var(--line); border-radius:10px; padding:5px; background:#fff;}
 .preview-box img {width:100%; height:100%; object-fit:contain;}
@@ -122,7 +135,7 @@ th{background:#f8fafc}
         <thead>
             <tr>
                 <th>Müşteri Adı</th>
-                <th>Telefon & Adres</th>
+                <th>Telefon &amp; Adres</th>
                 <th>Ürünler</th>
                 <th>Toplam Tutar</th>
                 <th>İşlem</th>
@@ -131,7 +144,12 @@ th{background:#f8fafc}
         <tbody id="orderTableBody"></tbody>
     </table>
 
-    <h2 class="section-title">Mevcut Ürünler</h2>
+    <!-- MEVCUT ÜRÜNLER (Başlık ve Sağ Üstte Arama Barı) -->
+    <div class="table-header-row">
+        <h2>Mevcut Ürünler</h2>
+        <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="Ürün adı veya kategori ara..." oninput="handleProductSearch(this.value)">
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -145,12 +163,21 @@ th{background:#f8fafc}
         </thead>
         <tbody id="productTableBody"></tbody>
     </table>
+
+    <!-- 10'LU SAYFALAMA KONTROLLERİ -->
+    <div class="pagination" id="productPagination"></div>
 </div>
 
 <script>
 let allProducts = [];
+let filteredProducts = [];
 let uploading = false;
 let uploadedImages = [];
+
+// Sayfalama Değişkenleri
+let currentPage = 1;
+const PRODUCTS_PER_PAGE = 10;
+let searchKeyword = '';
 
 const categorySubMap = {
   "Beyaz Eşya": ["Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi", "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Mikrodalga Fırın", "Set Üstü Ocak", "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"],
@@ -284,10 +311,46 @@ async function loadProducts() {
     const res = await fetch('/api/products');
     const products = await res.json();
     allProducts = products;
+    filterAndRenderProducts();
+}
+
+// ARAMA VE SAYFALAMA FİLTRESİ
+function handleProductSearch(keyword) {
+    searchKeyword = keyword.toLowerCase().trim();
+    currentPage = 1;
+    filterAndRenderProducts();
+}
+
+function filterAndRenderProducts() {
+    if (!searchKeyword) {
+        filteredProducts = [...allProducts];
+    } else {
+        filteredProducts = allProducts.filter(p => {
+            const titleMatch = (p.title || '').toLowerCase().includes(searchKeyword);
+            const categoryMatch = (p.category || '').toLowerCase().includes(searchKeyword);
+            const subCategoryMatch = (p.subCategory || '').toLowerCase().includes(searchKeyword);
+            return titleMatch || categoryMatch || subCategoryMatch;
+        });
+    }
+
     const tbody = document.getElementById('productTableBody');
     tbody.innerHTML = '';
-    
-    products.forEach(p => {
+
+    if (filteredProducts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; padding:20px;">Aramaya uygun ürün bulunamadı.</td></tr>`;
+        renderPagination(0);
+        return;
+    }
+
+    const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const end = start + PRODUCTS_PER_PAGE;
+    const pageItems = filteredProducts.slice(start, end);
+
+    pageItems.forEach(p => {
         tbody.innerHTML += `
             <tr>
                 <td><b>${p.title}</b></td>
@@ -305,6 +368,37 @@ async function loadProducts() {
             </tr>
         `;
     });
+
+    renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+    const paginationEl = document.getElementById('productPagination');
+    if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+    }
+
+    let html = `
+        <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹ Önceki</button>
+    `;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `
+            <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>
+        `;
+    }
+
+    html += `
+        <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Sonraki ›</button>
+    `;
+
+    paginationEl.innerHTML = html;
+}
+
+function changePage(page) {
+    currentPage = page;
+    filterAndRenderProducts();
 }
 
 async function loadOrders() {
@@ -319,7 +413,7 @@ async function loadOrders() {
     }
 
     orders.forEach(o => {
-        let productList = o.products.map(item => {
+        let productList = (o.products || []).map(item => {
             const qty = item.qty || 1;
             const itemTotal = Number(item.price * qty).toLocaleString('tr-TR');
             return `• <b>${qty} Adet</b> - ${item.title} <small style="color:#64748b;">(${itemTotal} TL)</small>`;
@@ -367,7 +461,7 @@ async function addProduct() {
         stock: document.getElementById('stock').value,
         warranty: document.getElementById('warranty').value.trim(),
         description: document.getElementById('description').value.trim(),
-        img: uploadedImages[0], // MongoDB şeması için ana görsel zorunludur
+        img: uploadedImages[0],
         images: uploadedImages
     };
 
@@ -399,7 +493,6 @@ function startEdit(id) {
     document.getElementById('price').value = p.price;
     document.getElementById('category').value = p.category;
     
-    // Önce seçilen ana kategorinin alt kategorilerini yükle, sonra kayıtlı olanı seç
     updateSubCategories(p.category);
     document.getElementById('subCategory').value = p.subCategory || '';
     
