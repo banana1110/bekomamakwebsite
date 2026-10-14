@@ -41,6 +41,18 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
 .cat-pill:hover{border-color:var(--blue);color:var(--blue);}
 .cat-pill.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 12px rgba(8,118,209,.25);font-weight:700;}
 
+/* Alt Kategori Kartları */
+.subcat-wrapper{background:#fff;border-bottom:1px solid var(--line);padding:16px 0;display:none;}
+.subcat-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 0 10px 0;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
+.subcat-scroll::-webkit-scrollbar{height:6px;}
+.subcat-scroll::-webkit-scrollbar-thumb{background:#dce3eb;border-radius:4px;}
+.subcat-card{flex:0 0 140px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all .2s ease;text-align:center;user-select:none;}
+.subcat-card:hover{border-color:var(--blue);background:#fff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06);}
+.subcat-card.active{border-color:var(--blue);background:#eaf6ff;color:var(--blue);font-weight:800;box-shadow:0 0 0 2px var(--blue);}
+.subcat-card .subcat-icon{width:48px;height:48px;object-fit:contain;display:block;}
+.subcat-card span{font-size:12px;line-height:1.25;font-weight:600;}
+
+
 /* Hero & Trust */
 .hero{padding:24px 0 10px}
 .hero-grid{display:grid;grid-template-columns:1.55fr .75fr;gap:18px}
