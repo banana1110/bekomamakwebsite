@@ -55,6 +55,7 @@ const productSchema = new mongoose.Schema({
     images: [String],
     stock: String,
     warranty: { type: String, default: '3 Yıl Beko Garanti' },
+    subCategory: { type: String, default: '' },
     description: { type: String, default: '' }
 });
 const Product = mongoose.model('Product', productSchema);
@@ -129,6 +130,7 @@ app.post('/api/products', async (req, res) => {
             title: title.toUpperCase(),
             price,
             category,
+            subCategory: subCategory || '',
             img: mainImg,
             images: images || [],
             stock: stock || 'Stokta Var',
@@ -144,13 +146,14 @@ app.post('/api/products', async (req, res) => {
 
 app.put('/api/products/:id', async (req, res) => {
     try {
-        const { title, price, category, images, stock, warranty, description } = req.body;
+        const { title, subCategory, price, category, images, stock, warranty, description } = req.body;
         const mainImg = (images && images.length > 0) ? images[0] : 'https://via.placeholder.com/400';
         
         await Product.findByIdAndUpdate(req.params.id, {
             title: title.toUpperCase(),
             price,
             category,
+            subCategory: subCategory || '',
             img: mainImg,
             images: images || [],
             stock: stock || 'Stokta Var',
