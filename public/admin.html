@@ -42,6 +42,11 @@ th{background:#f8fafc}
 .preview-box {position:relative; width:90px; height:90px; border:1px solid var(--line); border-radius:10px; padding:5px; background:#fff;}
 .preview-box img {width:100%; height:100%; object-fit:contain;}
 .preview-box .remove-btn {position:absolute; top:-8px; right:-8px; background:#e53935; color:#fff; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:11px; padding:0; line-height:22px; text-align:center;}
+
+/* Banner Listesi */
+.banner-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:15px; margin-top:15px;}
+.banner-card{position:relative; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#f8fafc; padding:10px; display:flex; flex-direction:column; gap:8px;}
+.banner-card img{width:100%; height:120px; object-fit:cover; border-radius:8px;}
 </style>
 <script src="/socket.io/socket.io.js"></script>
 </head>
@@ -65,6 +70,18 @@ th{background:#f8fafc}
     <h1 id="panelTitle">Beko Bayi - Yönetim Paneli</h1>
     <div style="margin-bottom:20px;"><a href="/" target="_blank" style="color:var(--blue); font-weight:bold;">→ Mağaza Sitesini Görüntüle</a></div>
     
+    <!-- KAMPANYA BANNER YÖNETİMİ -->
+    <h2 class="section-title">Ana Sayfa Kampanya Bannerı Yönetimi</h2>
+    <p style="color:#64748b; font-size:13px; margin-top:8px;">
+        Ana sayfadaki büyük mavi afiş alanına görseller yükleyebilirsiniz. Yüklenen tüm resimler vitrinde sırayla ve sayfalama ile gösterilir. Hiç resim yoksa sistem otomatik olarak varsayılan Beko afişini gösterir.
+    </p>
+    <div style="background:#f8fafc; border:1px dashed var(--line); padding:20px; border-radius:12px; margin-top:15px;">
+        <label>Yeni Kampanya Resmi Ekle (Birden fazla seçebilirsiniz)</label>
+        <input type="file" id="bannerFile" accept="image/*" multiple onchange="handleBannerUpload(this)" style="height:auto; padding:10px 15px; background:#fff;">
+        <div id="bannerStatus" style="font-size:12px; color:#64748b; margin-top:6px;"></div>
+    </div>
+    <div id="bannerListContainer" class="banner-grid"></div>
+
     <h2 class="section-title">Yeni Ürün Ekle / Düzenle</h2>
     <form id="productForm" onsubmit="handleFormSubmit(event)" style="margin-top:20px;">
         <input type="hidden" id="editId">
@@ -164,23 +181,22 @@ th{background:#f8fafc}
         <tbody id="productTableBody"></tbody>
     </table>
 
-    <!-- 10'LU SAYFALAMA KONTROLLERİ -->
     <div class="pagination" id="productPagination"></div>
 </div>
 
 <script>
 let allProducts = [];
 let filteredProducts = [];
+let allBanners = [];
 let uploading = false;
 let uploadedImages = [];
 
-// Sayfalama Değişkenleri
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 10;
 let searchKeyword = '';
 
 const categorySubMap = {
-  "Beyaz Eşya": ["Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi", "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Mikrodalga Fırın", "Set Üstü Ocak", "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"],
+  "Beyaz Eşya": ["Buzdolabı", "Derin Dondurucu", "Çamaşır Makinesi", "Bulaşık Makinesi", "Kurutma Makinesi", "Kurutmalı Çamaşır Makinesi", "Fırın", "Set Üstü Ocak", "İçecek Soğutucu", "Beyaz Eşya Yedek Parça ve Aksesuar", "Çeyiz Set"],
   "Ankastre": ["Ankastre Ocak", "Ankastre Davlumbazlar", "Ankastre Aspiratörler", "Ankastre Bulaşık Makineleri", "Ankastre Buzdolabı", "Ankastre Fırın", "Ankastre Mikrodalgalar", "Ankastre Set", "Pişirici Yedek Parça ve Aksesuarları"],
   "Televizyon": ["OLED TV", "QLED", "Yapay Zeka TV", "Oyun TV", "Dev Ekran TV", "Smart TV", "Google TV", "Full HD& HD TV", "4K TV", "LED TV", "Mutfak Televizyonu", "Hotel Tv", "Grundig TV", "Philips TV", "TCL TV"],
   "Elektronik": ["Bilgisayar", "Hobi - Oyun (Gaming) Ürünleri", "Ses& Görüntü Sistemleri", "Ödeme Sistemleri", "Cep Telefonu", "Cep Telefonu Aksesuarları", "Giyilebilir Teknoloji"],
@@ -204,7 +220,7 @@ function updateSubCategories(selectedCategory) {
     }
 }
 
-function resizeImage(file, maxSize = 900) {
+function resizeImage(file, maxSize = 1200) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onerror = reject;
@@ -220,7 +236,7 @@ function resizeImage(file, maxSize = 900) {
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/jpeg', 0.85));
+                resolve(canvas.toDataURL('image/jpeg', 0.88));
             };
             image.src = reader.result;
         };
@@ -228,6 +244,82 @@ function resizeImage(file, maxSize = 900) {
     });
 }
 
+// --- KAMPANYA BANNER İŞLEMLERİ ---
+async function loadBanners() {
+    try {
+        const res = await fetch('/api/banners');
+        allBanners = await res.json();
+        const container = document.getElementById('bannerListContainer');
+        container.innerHTML = '';
+
+        if (allBanners.length === 0) {
+            container.innerHTML = '<p style="grid-column:1/-1; color:#64748b; font-size:13px;">Henüz özel banner yüklenmedi. Ana sayfada varsayılan mavi Beko afişi gösteriliyor.</p>';
+            return;
+        }
+
+        allBanners.forEach((b, index) => {
+            container.innerHTML += `
+              <div class="banner-card">
+                <img src="${b.imageUrl}" alt="Banner ${index + 1}">
+                <button type="button" class="del-btn" onclick="deleteBanner('${b._id}')" style="width:100%;">Bannerı Sil</button>
+              </div>
+            `;
+        });
+    } catch (err) {
+        console.error('Bannerlar yüklenemedi:', err);
+    }
+}
+
+async function handleBannerUpload(input) {
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
+
+    const status = document.getElementById('bannerStatus');
+    status.style.color = '#0876d1';
+
+    for (let i = 0; i < files.length; i++) {
+        status.innerText = `${i + 1} / ${files.length} banner yükleniyor. Lütfen bekleyin...`;
+        try {
+            const dataUrl = await resizeImage(files[i], 1600);
+            const upRes = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: dataUrl })
+            });
+            const upResult = await upRes.json();
+            if (!upRes.ok || !upResult.url) throw new Error(upResult.error);
+
+            await fetch('/api/banners', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ imageUrl: upResult.url })
+            });
+        } catch (err) {
+            alert(`${files[i].name} yüklenemedi: ` + err.message);
+        }
+    }
+
+    status.style.color = 'green';
+    status.innerText = 'Bannerlar başarıyla kaydedildi!';
+    input.value = '';
+    loadBanners();
+}
+
+async function deleteBanner(id) {
+    if (!confirm('Bu kampanya bannerını kaldırmak istediğinize emin misiniz?')) return;
+    try {
+        const res = await fetch(`/api/banners/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            loadBanners();
+        } else {
+            alert('Banner silinemedi');
+        }
+    } catch (err) {
+        alert('Hata: ' + err.message);
+    }
+}
+
+// --- ÜRÜN GÖRSELLERİ İŞLEMLERİ ---
 async function handleMultipleImagesSelect(input) {
     const files = Array.from(input.files);
     if (files.length === 0) return;
@@ -297,6 +389,7 @@ async function checkLogin() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             updateSubCategories(document.getElementById('category').value);
+            loadBanners();
             loadProducts();
             loadOrders();
         } else {
@@ -314,7 +407,6 @@ async function loadProducts() {
     filterAndRenderProducts();
 }
 
-// ARAMA VE SAYFALAMA FİLTRESİ
 function handleProductSearch(keyword) {
     searchKeyword = keyword.toLowerCase().trim();
     currentPage = 1;

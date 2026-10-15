@@ -229,6 +229,45 @@ app.delete('/api/orders/:id', async (req, res) => {
     }
 });
 
+// --- KAMPANYA BANNER ŞEMASI ---
+const bannerSchema = new mongoose.Schema({
+    imageUrl: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
+});
+const Banner = mongoose.model('Banner', bannerSchema);
+
+// --- KAMPANYA BANNER API'LERİ ---
+app.get('/api/banners', async (req, res) => {
+    try {
+        const banners = await Banner.find().sort({ createdAt: -1 });
+        res.json(banners);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/api/banners', async (req, res) => {
+    try {
+        const { imageUrl } = req.body;
+        if (!imageUrl) return res.status(400).json({ error: 'Görsel URL gereklidir.' });
+        const newBanner = new Banner({ imageUrl });
+        await newBanner.save();
+        res.status(201).json(newBanner);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.delete('/api/banners/:id', async (req, res) => {
+    try {
+        await Banner.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 server.listen(PORT, () => {
     console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);
     console.log(`Yönetim Paneli: http://localhost:${PORT}/admin.html`);
