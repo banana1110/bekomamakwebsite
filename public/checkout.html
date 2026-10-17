@@ -25,12 +25,11 @@ button,input,select,textarea{font:inherit}
 a{text-decoration:none;color:inherit}
 
 .checkout-nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;}
-.nav-wrap{max-width:1200px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.nav-wrap{max-width:1200px;margin:auto;height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
 .back-link{font-size:14px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;}
 .back-link:hover{color:var(--dark);}
-.brand-box{display:flex;flex-direction:column;align-items:center;}
-.brand-box img{height:34px;object-fit:contain;}
-.brand-sub{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;}
+.brand-box{display:flex;align-items:center;height:52px;}
+.brand-box img{height:100%;width:auto;max-width:180px;object-fit:contain;display:block;}
 
 .checkout-container{max-width:1200px;margin:32px auto;padding:0 24px;display:grid;grid-template-columns:1.55fr 1fr;gap:32px;align-items:start;}
 
@@ -168,7 +167,6 @@ a{text-decoration:none;color:inherit}
 .btn-checkout-complete:hover{background:var(--green-hover);}
 .btn-checkout-complete:disabled{background:#9ca3af;cursor:not-allowed;box-shadow:none;}
 
-/* İyzico Form Alanı */
 #iyzicoPayArea{margin-top:20px;min-height:200px;display:none;}
 
 @media(max-width:960px){
@@ -183,19 +181,16 @@ a{text-decoration:none;color:inherit}
 <header class="checkout-nav">
   <div class="nav-wrap">
     <a href="/" class="back-link">‹ Sepetim</a>
-    <div class="brand-box">
-      <img src="logo.png" alt="Beko">
-      <span class="brand-sub">Mamak Yetkili Bayii</span>
-    </div>
+    <a href="/" class="brand-box">
+      <img src="logo1.png" alt="Beko Mamak Bayi">
+    </a>
   </div>
 </header>
 
 <div class="checkout-container">
   
-  <!-- SOL KOLON -->
   <div class="checkout-left">
     
-    <!-- ADRES PANELİ -->
     <div class="panel-card" id="addressFormPanel">
       <div class="panel-head">
         <h3 class="panel-title">📄 Teslimat &amp; Fatura Adresi</h3>
@@ -291,7 +286,6 @@ a{text-decoration:none;color:inherit}
       </form>
     </div>
 
-    <!-- KAYITLI ADRES ONAY KUTUSU -->
     <div class="saved-address-card" id="savedAddressCard">
       <div class="saved-head">
         <span class="saved-badge">✓ Teslimat Adresi</span>
@@ -301,7 +295,6 @@ a{text-decoration:none;color:inherit}
       <div class="cargo-box">🚚 Beko Mamak Bayii Yetkili Servis ve Özel Teslimatı (Ücretsiz)</div>
     </div>
 
-    <!-- ÖDEME YÖNTEMLERİ PANELİ -->
     <div class="panel-card" id="paymentPanel">
       <div class="panel-head">
         <h3 class="panel-title">💳 Ödeme Yöntemi</h3>
@@ -325,13 +318,11 @@ a{text-decoration:none;color:inherit}
         </div>
       </div>
 
-      <!-- İYZİCO FORMUNUN YÜKLENECEĞİ ALAN -->
       <div id="iyzicoPayArea"></div>
     </div>
 
   </div>
 
-  <!-- SAĞ KOLON: ÖZET -->
   <div class="checkout-right">
     <div class="panel-card summary-card">
       <div class="panel-head">
@@ -372,7 +363,6 @@ const ankaraMahalleleri = {
 };
 
 window.onload = () => {
-  // Ödeme başarısız dönmüşse uyar
   const params = new URLSearchParams(window.location.search);
   if (params.get('payment') === 'failed') {
       alert('Ödeme tamamlanamadı: ' + (params.get('msg') || 'Kart işlemi reddedildi.'));
@@ -499,7 +489,6 @@ function checkButtonState() {
   btn.disabled = !(savedOrderAddress && termsChecked);
 }
 
-// İYZİCO ÖDEME FORMU ENTEGRASYONU
 async function startIyzicoPayment() {
   if (!savedOrderAddress) return alert('Lütfen önce adresinizi kaydedin.');
   if (!document.getElementById('termsCheck').checked) return alert('Lütfen sözleşmeleri onaylayın.');
@@ -528,12 +517,11 @@ async function startIyzicoPayment() {
       payArea.style.display = 'block';
       payArea.innerHTML = '';
 
-      // İyzico'nun döndüğü script ve form elemanlarını sayfaya güvenle enjekte et
       const fragment = document.createRange().createContextualFragment(data.checkoutFormContent);
       payArea.appendChild(fragment);
 
       payArea.scrollIntoView({ behavior: 'smooth' });
-      btn.style.display = 'none'; // Form açılınca butonu gizle
+      btn.style.display = 'none';
     } else {
       alert('İyzico bağlantı hatası: ' + (data.error || 'Form yüklenemedi.'));
       btn.innerText = 'Ödemeye Geç (iyzico Güvenli Ödeme)';
