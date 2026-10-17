@@ -10,6 +10,7 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.11.0",
     "express": "^4.19.2",
+    "iyzipay": "^2.0.70",
     "mongoose": "^8.3.1",
     "socket.io": "^4.7.5"
   }
