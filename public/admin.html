@@ -155,6 +155,7 @@ th{background:#f8fafc}
                 <th>Telefon &amp; Adres</th>
                 <th>Ürünler</th>
                 <th>Toplam Tutar</th>
+                <th>Ödeme Durumu</th>
                 <th>İşlem</th>
             </tr>
         </thead>
@@ -511,6 +512,12 @@ async function loadOrders() {
             return `• <b>${qty} Adet</b> - ${item.title} <small style="color:#64748b;">(${itemTotal} TL)</small>`;
         }).join('<br>');
 
+        // Durum rozeti
+        const isPaid = (o.status || '').includes('Ödeme Alındı');
+        const statusBadge = isPaid 
+            ? '<span style="background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px;">✓ Ödendi</span>' 
+            : `<span style="background:#fef3c7; color:#b45309; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px;">${o.status || 'Bekliyor'}</span>`;
+    
         tbody.innerHTML += `
             <tr>
                 <td><b>${o.customerName}</b></td>

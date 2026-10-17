@@ -7,6 +7,7 @@ const cloudinary = require('cloudinary').v2;
 const Iyzipay = require('iyzipay');
 
 const app = express();
+app.set('trust proxy', 1);
 const server = http.createServer(app);
 const io = new Server(server);
 
@@ -255,7 +256,8 @@ app.post('/api/orders', async (req, res) => {
 
 app.get('/api/orders', async (req, res) => {
     try {
-        const orders = await Order.find().sort({ date: -1 });
+        // Sadece ödemesi tamamlanmış veya doğrudan oluşturulmuş siparişleri listele
+        const orders = await Order.find({ status: { $ne: 'Ödeme Bekliyor' } }).sort({ date: -1 });
         res.json(orders);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -321,7 +323,7 @@ app.post('/api/payment/initialize', async (req, res) => {
         });
         await pendingOrder.save();
 
-        const callbackUrl = `${req.protocol}://${req.get('host')}/api/payment/callback?orderId=${pendingOrder._id}`;
+        const callbackUrl = `https://${req.get('host')}/api/payment/callback?orderId=${pendingOrder._id}`;
 
         let cleanPhone = (buyerData.phone || '').replace(/\D/g, '');
         if (!cleanPhone.startsWith('90')) cleanPhone = '90' + cleanPhone;
@@ -390,6 +392,7 @@ app.post('/api/payment/callback', async (req, res) => {
         const orderId = req.query.orderId;
 
         if (!token) {
+            if (orderId) await Order.findByIdAndDelete(orderId);
             return res.redirect('/checkout.html?payment=failed&msg=GecersizToken');
         }
 
@@ -397,14 +400,20 @@ app.post('/api/payment/callback', async (req, res) => {
             locale: Iyzipay.LOCALE.TR,
             token: token
         }, async (err, result) => {
+            console.log('iyzico Callback Sonucu:', JSON.stringify(result));
+
+            // Ödeme Başarısız ise: Geçici siparişi veritabanından tamamen sil
             if (err || result.paymentStatus !== 'SUCCESS') {
-                console.error('Ödeme Başarısız:', result && result.errorMessage);
+                const errorReason = (result && (result.errorMessage || result.errorGroup || result.paymentStatus)) || 'Ödeme reddedildi.';
+                console.error('Ödeme Başarısız:', errorReason);
+
                 if (orderId) {
-                    await Order.findByIdAndUpdate(orderId, { status: 'Ödeme Başarısız' });
+                    await Order.findByIdAndDelete(orderId); // <-- Panelde görünmemesi için silindi
                 }
-                return res.redirect(`/checkout.html?payment=failed&msg=${encodeURIComponent((result && result.errorMessage) || 'Ödeme tamamlanamadı.')}`);
+                return res.redirect(`/checkout.html?payment=failed&msg=${encodeURIComponent(errorReason)}`);
             }
 
+            // Ödeme Başarılı ise: Sipariş durumunu kesinleştir ve admin paneline canlı aktar
             const updatedOrder = await Order.findByIdAndUpdate(
                 orderId,
                 { status: 'Ödeme Alındı (iyzico)' },
@@ -417,7 +426,7 @@ app.post('/api/payment/callback', async (req, res) => {
 
     } catch (err) {
         console.error('Callback hatası:', err);
-        res.redirect('/checkout.html?payment=failed');
+        res.redirect('/checkout.html?payment=failed&msg=SunucuHatasi');
     }
 });
 
