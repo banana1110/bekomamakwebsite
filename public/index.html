@@ -76,32 +76,56 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdr
   border-bottom: 1px solid var(--line);
   padding: 10px 0;
   display: none;
+  width: 100%;
 }
 .subcat-scroll {
   display: flex !important;
-  gap: 8px;
+  flex-direction: row !important;
+  gap: 10px;
   overflow-x: auto;
-  padding: 4px 0;
-  scrollbar-width: none;
+  padding: 6px 16px 10px 16px; /* Kenarlardan nefes payı */
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; /* İnce şık kaydırma çubuğu */
 }
-.subcat-scroll::-webkit-scrollbar { display: none; }
+.subcat-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+.subcat-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
 .subcat-card {
-  flex: 0 0 auto;
+  flex: 0 0 auto !important; /* Butonların asla ezilmesini ve kesilmesini engeller */
   background: #f8fafc;
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 8px 14px;
+  padding: 9px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  white-space: nowrap;
+  transition: all .2s ease;
+  user-select: none;
+  white-space: nowrap !important; /* Yazıların tek satırda tam görünmesini sağlar */
+  box-shadow: 0 1px 3px rgba(0,0,0,.02);
+}
+.subcat-card:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: #fff;
 }
 .subcat-card.active {
   border-color: var(--blue);
-  background: var(--blue);
+  background: var(--blue) !important;
   color: #fff !important;
   font-weight: 700;
+  box-shadow: 0 4px 12px rgba(8,118,209,.25);
 }
-.subcat-card span { font-size: 12px; font-weight: 600; }
+.subcat-card span {
+  font-size: 13px;
+  font-weight: 600;
+}
 
 /* Hero Banner */
 .hero{padding:20px 0 10px}
@@ -784,7 +808,11 @@ function filterBySubCategory(subName, element) {
     currentSubCategory = subName;
     currentPage = 1;
     document.querySelectorAll('.subcat-card').forEach(c => c.classList.remove('active'));
-    if(element) element.classList.add('active');
+    if(element) {
+        element.classList.add('active');
+        // Tıklanan buton ekranın sağında/solunda kalmışsa otomatik merkeze odaklar:
+        element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
     applyFilters();
 }
 
