@@ -11,6 +11,170 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
+const Iyzipay = require('iyzipay');
+
+// --- İYZİCO SANDBOX BAĞLANTISI ---
+// (1. Adımda aldığın anahtarları buraya yapıştır)
+const iyzipay = new Iyzipay({
+    apiKey: 'sandbox-CnMDcyKfNcIYfm7vxwfVaZOWrAmtr4tD',
+    secretKey: 'sandbox-qF4KhGjvDOTUHEOl0QLDUU9aHNr177Hg',
+    uri: 'https://sandbox-api.iyzipay.com'
+});
+
+// --- ÖDEME BAŞLATMA API'Sİ (CHECKOUT FORM İLK ADIM) ---
+app.post('/api/payment/initialize', async (req, res) => {
+    try {
+        const { buyerData, cart, totalPrice } = req.body;
+
+        if (!cart || cart.length === 0) {
+            return res.status(400).json({ error: 'Sepet boş.' });
+        }
+
+        const conversationId = 'ORDER_' + Date.now();
+        const formattedTotal = Number(totalPrice).toFixed(2);
+
+        // Sepet kalemlerini iyzico formatına çevir (Fiyatların toplamı ana tutara kuruşu kuruşuna eşit olmalıdır)
+        let basketItems = [];
+        cart.forEach((item, index) => {
+            const qty = item.qty || 1;
+            const unitPrice = Number(item.price).toFixed(2);
+            for (let i = 0; i < qty; i++) {
+                basketItems.push({
+                    id: `${item._id || item.id || 'PRD'}_${index}_${i}`,
+                    name: (item.title || 'Beko Ürünü').substring(0, 50),
+                    category1: item.category || 'Beyaz Eşya',
+                    itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                    price: unitPrice
+                });
+            }
+        });
+
+        // Geçici siparişi "Ödeme Bekliyor" olarak MongoDB'ye kaydet
+        const pendingOrder = new Order({
+            customerName: buyerData.customerName,
+            firstName: buyerData.firstName,
+            lastName: buyerData.lastName,
+            phone: buyerData.phone,
+            address: `${buyerData.neighborhood}, ${buyerData.fullAddress}, ${buyerData.district} / Ankara`,
+            addressDetails: {
+                city: 'Ankara',
+                district: buyerData.district,
+                neighborhood: buyerData.neighborhood,
+                addressDesc: buyerData.addressDesc || '',
+                addressTitle: buyerData.title || ''
+            },
+            products: cart,
+            totalPrice: Number(totalPrice),
+            status: 'Ödeme Bekliyor'
+        });
+        await pendingOrder.save();
+
+        const callbackUrl = `${req.protocol}://${req.get('host')}/api/payment/callback?orderId=${pendingOrder._id}`;
+
+        // Telefonu iyzico için temizle
+        let cleanPhone = (buyerData.phone || '').replace(/\D/g, '');
+        if (!cleanPhone.startsWith('90')) cleanPhone = '90' + cleanPhone;
+
+        const request = {
+            locale: Iyzipay.LOCALE.TR,
+            conversationId: conversationId,
+            price: formattedTotal,
+            paidPrice: formattedTotal,
+            currency: Iyzipay.CURRENCY.TRY,
+            basketId: pendingOrder._id.toString(),
+            paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+            callbackUrl: callbackUrl,
+            enabledInstallments: [1, 2, 3, 6, 9, 12],
+            buyer: {
+                id: 'BYR_' + pendingOrder._id,
+                name: buyerData.firstName || 'Müşteri',
+                surname: buyerData.lastName || 'Beko',
+                gsmNumber: '+' + cleanPhone,
+                email: buyerData.email || 'musteri@bekomamak.com',
+                identityNumber: buyerData.tckn && buyerData.tckn.length === 11 ? buyerData.tckn : '11111111111',
+                registrationAddress: buyerData.fullAddress,
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '85.95.230.12',
+                city: 'Ankara',
+                country: 'Turkey'
+            },
+            shippingAddress: {
+                contactName: buyerData.customerName,
+                city: 'Ankara',
+                country: 'Turkey',
+                address: buyerData.fullAddress,
+                zipCode: buyerData.postalCode || '06260'
+            },
+            billingAddress: {
+                contactName: buyerData.customerName,
+                city: 'Ankara',
+                country: 'Turkey',
+                address: buyerData.fullAddress,
+                zipCode: buyerData.postalCode || '06260'
+            },
+            basketItems: basketItems
+        };
+
+        iyzipay.checkoutFormInitialize.create(request, (err, result) => {
+            if (err || result.status !== 'success') {
+                console.error('İyzico Başlatma Hatası:', err || result.errorMessage);
+                return res.status(500).json({ error: result.errorMessage || 'Ödeme formu oluşturulamadı.' });
+            }
+
+            // Oluşan form HTML içeriğini ve token'ı dön
+            res.json({
+                status: 'success',
+                checkoutFormContent: result.checkoutFormContent,
+                token: result.token
+            });
+        });
+
+    } catch (err) {
+        console.error('Ödeme isteği hatası:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- ÖDEME DÖNÜŞ (CALLBACK) API'Sİ ---
+app.post('/api/payment/callback', async (req, res) => {
+    try {
+        const token = req.body.token;
+        const orderId = req.query.orderId;
+
+        if (!token) {
+            return res.redirect('/checkout.html?payment=error&msg=GecersizToken');
+        }
+
+        iyzipay.checkoutForm.retrieve({
+            locale: Iyzipay.LOCALE.TR,
+            token: token
+        }, async (err, result) => {
+            if (err || result.paymentStatus !== 'SUCCESS') {
+                console.error('Ödeme Başarısız:', result.errorMessage);
+                if (orderId) {
+                    await Order.findByIdAndUpdate(orderId, { status: 'Ödeme Başarısız' });
+                }
+                return res.redirect(`/checkout.html?payment=failed&msg=${encodeURIComponent(result.errorMessage || 'Ödeme tamamlanamadı.')}`);
+            }
+
+            // Ödeme Başarılı: Siparişi onayla ve Socket ile admin paneline canlı düşür
+            const updatedOrder = await Order.findByIdAndUpdate(
+                orderId,
+                { status: 'Ödeme Alındı (iyzico)' },
+                { new: true }
+            );
+
+            io.emit('newOrder', updatedOrder);
+
+            // Kullanıcıyı başarılı sonuç sayfasına yönlendir
+            res.redirect(`/?payment=success&orderId=${orderId}`);
+        });
+
+    } catch (err) {
+        console.error('Callback hatası:', err);
+        res.redirect('/checkout.html?payment=error');
+    }
+});
+
 // --- CLOUDINARY BAĞLANTI AYARLARI ---
 cloudinary.config({
   cloud_name: 'n3jlkq2a',
