@@ -509,6 +509,14 @@ const categorySubMap = {
 };
 
 window.onload = () => {
+  // --- ÖDEME BAŞARILI DÖNDÜYSE SEPETİ SIFIRLA VE BİLDİRİM VER ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+        localStorage.removeItem('beko_cart');
+        cart = [];
+        openModal('Siparişiniz Alındı!', 'Ödemeniz iyzico güvencesiyle başarıyla tamamlandı. Siparişiniz hazırlanmak üzere mağaza yetkililerimize iletildi.');
+        window.history.replaceState({}, document.title, window.location.pathname); // URL'deki parametreyi temizler
+    }
     updateCartUI();
     loadHeroBanners();
     fetchProductsFromDatabase();
