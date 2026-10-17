@@ -27,8 +27,8 @@ cloudinary.config({
 
 // --- 3. İYZİCO SANDBOX BAĞLANTISI ---
 const iyzipay = new Iyzipay({
-    apiKey: 'sandbox-CnMDcyKfNcIYfm7vxwfVaZOWrAmtr4tD',
-    secretKey: 'sandbox-qF4KhGjvDOTUHEOl0QLDUU9aHNr177Hg',
+    apiKey: 'sandbox-SjDeabOS6gCYGj5of6mLjk0adkaLSZ4F',
+    secretKey: 'sandbox-ALGI9iuAXYfep31Jd9fjKih4wd4jLLkO',
     uri: 'https://sandbox-api.iyzipay.com'
 });
 
