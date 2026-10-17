@@ -524,6 +524,7 @@ async function loadOrders() {
                 <td>${o.phone}<br><small>${o.address}</small></td>
                 <td>${productList}</td>
                 <td><b>${Number(o.totalPrice).toLocaleString('tr-TR')} TL</b></td>
+                <td>${statusBadge}</td>
                 <td>
                     <button class="del-btn" onclick="deleteOrder('${o._id}')">Siparişi Sil</button>
                 </td>
